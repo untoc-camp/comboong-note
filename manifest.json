@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Comboong Note",
+  "version": "1.0.0",
+  "description": "학사일정 알림을 보내주는 확장 프로그램",
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "permissions": ["tabs", "scripting"],
+  "host_permissions": ["https://onestop.pusan.ac.kr/"]
+}
