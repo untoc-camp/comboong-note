@@ -10,7 +10,7 @@ function openModal() {
 
 function getSchedules() {}
 
-class ModalData {
+class ModalDisplayData {
   /**
    *
    * @param {string} content
@@ -31,6 +31,6 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.requestModalData) {
-    sendResponse({ modalData: new ModalData('종강', 60) });
+    sendResponse({ modalDisplayData: new ModalDisplayData('종강', 60) });
   }
 });
