@@ -1,4 +1,12 @@
-function openModal() {}
+function openModal() {
+  chrome.windows.create({
+    url: 'assets/modal.html',
+    type: 'popup',
+    width: 400,
+    height: 400,
+    focused: true,
+  });
+}
 
 function getSchedules() {}
 
