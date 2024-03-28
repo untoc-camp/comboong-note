@@ -10,6 +10,18 @@ function openModal() {
 
 function getSchedules() {}
 
+class ModalData {
+  /**
+   *
+   * @param {string} content
+   * @param {number} remainingDays
+   */
+  constructor(content, remainingDays) {
+    this.content = content;
+    this.remainingDays = remainingDays;
+  }
+}
+
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (reason === 'install' || reason === 'update') {
     openModal();
