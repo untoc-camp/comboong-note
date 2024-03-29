@@ -31,6 +31,33 @@ async function getSchedules() {
   return result[0].result;
 }
 
+async function getMajorNotices() {
+  const { tabs } = await chrome.windows.create({
+    url: 'https://cse.pusan.ac.kr/cse/14651/subview.do',
+    state: 'minimized',
+  });
+
+  const result = await chrome.scripting.executeScript({
+    target: { tabId: tabs[0].id },
+    func: () => {
+      const articleTitles = Array.from(document.querySelectorAll('.artclLinkView'));
+      const articleWriters = Array.from(document.querySelectorAll('._artclTdWriter'));
+
+      return articleTitles.map((articleTitleInfo, index) => {
+        const articleTitle = articleTitleInfo.innerText;
+        const articleHref = articleTitleInfo.href;
+        const articleWriter = articleWriters[index].innerText;
+
+        return { articleTitle, articleHref, articleWriter };
+      });
+    },
+  });
+
+  chrome.windows.remove(tabs[0].windowId);
+
+  return result[0].result;
+}
+
 class ModalDisplayData {
   /**
    *
@@ -47,6 +74,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (reason === 'install' || reason === 'update') {
     openModal();
     const schedules = await getSchedules();
+    const majorNotices = await getMajorNotices();
   }
 });
 

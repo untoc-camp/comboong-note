@@ -7,5 +7,5 @@
     "service_worker": "service-worker.js"
   },
   "permissions": ["tabs", "scripting"],
-  "host_permissions": ["https://onestop.pusan.ac.kr/"]
+  "host_permissions": ["https://onestop.pusan.ac.kr/", "https://cse.pusan.ac.kr/cse/14651/subview.do"]
 }
