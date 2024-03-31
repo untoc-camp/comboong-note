@@ -31,8 +31,6 @@ async function getSchedules() {
   return result[0].result;
 }
 
-<<<<<<< Updated upstream
-=======
 async function getMajorNotices() {
   const { tabs } = await chrome.windows.create({
     url: 'https://cse.pusan.ac.kr/cse/14651/subview.do',
@@ -61,7 +59,6 @@ async function getMajorNotices() {
 }
 
 
->>>>>>> Stashed changes
 class ModalDisplayData {
   /**
    *
@@ -78,13 +75,10 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (reason === 'install' || reason === 'update') {
     openModal();
     const schedules = await getSchedules();
-<<<<<<< Updated upstream
-=======
     const majorNotices = await getMajorNotices();
 
     chrome.storage.local.set({ schedules, majorNotices });
     chrome.storage.local.get((result) => console.log(result)); //크롬 개발자도구에선 확장프로그램의 로컬 스토리지를 볼 수 없다고 해서, 콘솔에 띄웁니다
->>>>>>> Stashed changes
   }
 });
 
