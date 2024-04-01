@@ -1,0 +1,15 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 300px;
+    padding: 10px;
+  }
+h2 {
+    margin-top: 0;
+  }
+ul {
+    list-style-type: none;
+    padding: 0;
+  }
+li {
+    margin-bottom: 5px;
+  }

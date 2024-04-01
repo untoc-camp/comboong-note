@@ -58,6 +58,7 @@ async function getMajorNotices() {
   return result[0].result;
 }
 
+
 class ModalDisplayData {
   /**
    *
@@ -75,6 +76,9 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
     openModal();
     const schedules = await getSchedules();
     const majorNotices = await getMajorNotices();
+
+    chrome.storage.local.set({ schedules, majorNotices });
+    chrome.storage.local.get((result) => console.log(result)); //크롬 개발자도구에선 확장프로그램의 로컬 스토리지를 볼 수 없다고 해서, 콘솔에 띄웁니다
   }
 });
 
@@ -83,3 +87,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ modalDisplayData: new ModalDisplayData('종강', 60) });
   }
 });
+
+

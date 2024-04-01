@@ -6,6 +6,9 @@
   "background": {
     "service_worker": "service-worker.js"
   },
-  "permissions": ["tabs", "scripting"],
-  "host_permissions": ["https://onestop.pusan.ac.kr/", "https://cse.pusan.ac.kr/cse/14651/subview.do"]
+  "permissions": ["tabs", "scripting","storage"],
+  "host_permissions": ["https://onestop.pusan.ac.kr/", "https://cse.pusan.ac.kr/cse/14651/subview.do"],
+  "action": {
+    "default_popup": "assets/popup.html"
+  }
 }
