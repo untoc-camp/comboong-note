@@ -27,10 +27,10 @@ async function fetchAndRender() {
 
 fetchAndRender();
 
-async () => {
+(async () => {
   // 차후 설정한 주기 시간으로 변경
   await chrome.runtime.sendMessage({ time: 1 });
-};
+})();
 
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'crawlingPeriod') {
