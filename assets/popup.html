@@ -1,17 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>학사 일정 및 공지사항</title>
-  <link rel="stylesheet" href="popup.css">
-</head>
-<body>
-  <h2>학사 일정</h2>
-  <ul id="scheduleList"></ul>
+  <head>
+    <meta charset="UTF-8" />
+    <title>학사 일정 및 공지사항</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <ul class="tab-menu">
+      <li class="current" style="background-color: #024d97">학사일정</li><li style="background-color: #0275ce">학과공지</li><li style="background-color: #02BA6E">설정</li>
+    </ul>
+    <div id="popup-edge">
+      <div class="tab-content">
+        <div class="content current">
+          <table id="scheduleList"></table>
+        </div>
+        <div class="content">
+          <table id="noticeList"></table>
+        </div>
+        <div class="content">
+          <h1>설정 내용</h1>
+        </div>
+      </div>
+    </div>
 
-  <h2>주요 공지사항</h2>
-  <ul id="noticeList"></ul>
-
-  <script src="popup.js"></script>
-</body>
+    <script src="popup.js"></script>
+  </body>
 </html>
