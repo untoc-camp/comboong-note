@@ -7,18 +7,75 @@
   </head>
   <body>
     <ul class="tab-menu">
-      <li class="current" style="background-color: #024d97">학사일정</li><li style="background-color: #0275ce">학과공지</li><li style="background-color: #02BA6E">설정</li>
+      <li class="current color-1">학사일정</li><li class="color-2">학과공지</li><li class="color-3">설정</li>
     </ul>
-    <div id="popup-edge">
+    <div id="popup-edge" class="color-1">
       <div class="tab-content">
-        <div class="content current">
+        <div class="noticeTable content current">
           <table id="scheduleList"></table>
         </div>
-        <div class="content">
-          <table id="noticeList"></table>
+        <div class="noticeTable content">
+          <table id="noticeList">
+            <tr>
+              <td id="majorNoticeToggle"><img src="../img/drop_down.png" id="toggleImg"><b id="toggleText">일반공지 열기</b></td>
+            </tr>
+          </table>
         </div>
-        <div class="content">
-          <h1>설정 내용</h1>
+        <div class="settings content">
+          <ul id="settings">
+            <li>
+              <h2>알림:</h2>
+              <label>
+                <input role="switch" type="checkbox" value=1/>
+              </label>
+              <div class="settExplaination">모달창 알림 작동 유무</div>
+            </li>
+            <li>
+              <h2>D-day:</h2>
+              <div class="dropdown">
+                  <button class="dropbtn">
+                      <span class="dropbtn_content">Select</span>
+                      <img class="dropbtn_click" src="../img/drop_down.png">
+                  </button>
+                  <div class="dropdown-content">
+                      <div class="list">당일 알림</div>
+                      <div class="list">1일 전</div>
+                      <div class="list">3일 전</div>
+                      <div class="list">5일 전</div>
+                      <div class="list">7일 전</div>
+                  </div>
+              </div>
+              <div class="settExplaination">학사 일정 알림 예정일</div>
+          </li>
+          <li>
+              <h2>크롤링 주기:</h2>
+              <div class="dropdown">
+                  <button class="dropbtn">
+                      <span class="dropbtn_content">Select</span>
+                      <img class="dropbtn_click" src="../img/drop_down.png">
+                  </button>
+                  <div class="dropdown-content">
+                      <div class="list">1시간</div>
+                      <div class="list">3시간</div>
+                      <div class="list">6시간</div>
+                      <div class="list">12시간</div>
+                      <div class="list">24시간</div>
+                  </div>
+              </div>
+              <div class="settExplaination">공지사항 업데이트 주기</div>
+              <table class="versionContainer">
+                <tr>
+                  <td class="versionBox">
+                    <h3>버전</h3>
+                    <h3>버그문의</h3>
+                  </td>
+                  <td class="versionBox Right">
+                    <h3>ver 1.0.0</h3>
+                    <h3>lead@pusan.ac.kr</h3>
+                  </td>
+                </tr>
+              </table>
+          </li>
         </div>
       </div>
     </div>
