@@ -1,3 +1,5 @@
+const COLORS = ['#024d97', '#0275ce', '#02BA6E'];
+
 function renderPopup(schedules, majorNotices) {
   const scheduleList = document.getElementById('scheduleList');
   const noticeList = document.getElementById('noticeList');
