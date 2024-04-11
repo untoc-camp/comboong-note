@@ -3,6 +3,8 @@ function renderPopup(schedules, majorNotices) {
   const noticeList = document.getElementById('noticeList');
   const generalNotices = [];
 
+  resetRender();
+
   schedules.forEach(({ content, duration }) => {
     const tr = document.createElement('tr');
     const td1 = document.createElement('td');
@@ -11,6 +13,7 @@ function renderPopup(schedules, majorNotices) {
     td2.textContent = duration.replace(/2024-/g, '');
     scheduleList.append(tr);
     tr.append(td1, td2);
+    tr.classList.add('Schedule');
   });
 
   majorNotices.forEach((notice) => {
@@ -30,12 +33,32 @@ function renderPopup(schedules, majorNotices) {
     td.appendChild(document.createTextNode(` (${articleWriter})`));
     noticeList.append(tr);
     tr.append(td);
+    tr.classList.add('Notice');
 
     generalNotices.forEach((notice) => {
       if (notice.articleTitle == articleTitle) {
         tr.classList.add('generalNotice', 'hide');
       }
     });
+  });
+}
+
+function resetRender() {
+  const scheduleList = document.getElementById('scheduleList');
+  const noticeList = document.getElementById('noticeList');
+  const scheduleTr = document.querySelectorAll('.Schedule');
+  const noticeTr = document.querySelectorAll('.Notice');
+  const text = document.getElementById('toggleText');
+
+  if (text.innerText == '일반공지 닫기') {
+    text.innerText = '일반공지 열기';
+  } //일반공지 창이 열려있는 상태에서 resetRender함수가 돌았을떄 일반공지 토글창 텍스트가 뒤바뀌는것 방지
+
+  scheduleTr.forEach((schedule) => {
+    scheduleList.removeChild(schedule);
+  });
+  noticeTr.forEach((notice) => {
+    noticeList.removeChild(notice);
   });
 }
 
@@ -69,10 +92,10 @@ function majorNoticesToggle() {
     generalNotices.forEach((tr) => {
       tr.classList.toggle('hide');
     });
-    if(text.innerText=="일반공지 닫기"){
-      text.innerText="일반공지 열기";
-    }else{
-      text.innerText="일반공지 닫기";
+    if (text.innerText == '일반공지 열기') {
+      text.innerText = '일반공지 닫기';
+    } else {
+      text.innerText = '일반공지 열기';
     }
   });
 }
