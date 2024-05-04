@@ -54,7 +54,6 @@
       <img src="https://github.com/yujin5047.png" width="80" alt="yujin5047"/>
       <br />
       <sub><b>yujin5047</b></sub>
-      <p>유진이 옴</p>
       </a>
       <br />
     </td>
