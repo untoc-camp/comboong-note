@@ -8,5 +8,6 @@
   },
   "dependencies": {
     "chrome-types": "^0.1.276"
-  }
+  },
+  "type": "module"
 }

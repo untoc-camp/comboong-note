@@ -54,7 +54,7 @@ function resetRender() {
 
   if (text.innerText == '일반공지 닫기') {
     text.innerText = '일반공지 열기';
-  } //일반공지 창이 열려있는 상태에서 resetRender함수가 돌았을떄 일반공지 토글창 텍스트가 뒤바뀌는것 방지
+  } // 일반공지 창이 열려있는 상태에서 resetRender함수가 돌았을떄 일반공지 토글창 텍스트가 뒤바뀌는것 방지
 
   scheduleTr.forEach((schedule) => {
     scheduleList.removeChild(schedule);
@@ -143,5 +143,6 @@ majorNoticesToggle();
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'crawlingPeriod') {
     fetchAndRender();
+    alert('새로운 데이터가 업데이트 되었습니다!');
   }
 });
