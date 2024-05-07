@@ -4,11 +4,12 @@
   "version": "1.0.0",
   "description": "학사일정 알림을 보내주는 확장 프로그램",
   "background": {
-    "service_worker": "service-worker.js"
+    "service_worker": "service-worker.js",
+    "type": "module"
   },
   "permissions": ["tabs", "scripting", "storage", "alarms", "notifications"],
   "host_permissions": ["https://onestop.pusan.ac.kr/", "https://cse.pusan.ac.kr/cse/14651/subview.do"],
   "action": {
-    "default_popup": "assets/popup.html"
+    "default_popup": "assets/popup/popup.html"
   }
 }
