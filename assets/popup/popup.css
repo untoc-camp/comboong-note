@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'SCDream';
   font-weight: 400;
-  src: url('fonts/SCDream4.otf');
+  src: url('/assets/fonts/SCDream4.otf');
 }
 
 body {
@@ -69,10 +69,17 @@ img.dropbtn_click {
   height: 550px;
 }
 
-.tab-content .noticeTable.current {
+.tab-content .scheduleTable.current {
   display: inherit;
   border: 100%;
   height: 550px;
+  overflow: auto;
+}
+
+.tab-content .noticeTable.current {
+  display: inherit;
+  border: 100%;
+  height: 520px;
   overflow: auto;
 }
 
@@ -81,6 +88,7 @@ img.dropbtn_click {
   border: 100%;
   height: 450px;
   background-color: white;
+  overflow: auto;
 }
 
 .settExplaination {
@@ -94,40 +102,40 @@ img.dropbtn_click {
   padding: 15px;
 }
 
-.noticeTable table {
+.styledTable, table {
   border-collapse: separate;
-  border-spacing: 0;
+  border-spacing: 1;
   width: 100%;
 }
-.noticeTable th,
-.noticeTable td {
+.styledTable th,
+.styledTable td {
   padding: 6px 15px;
 }
-.noticeTable th {
+.styledTable th {
   background: #42444e;
   color: #fff;
   text-align: left;
 }
-.noticeTable tr:first-child th:first-child {
+.styledTable tr:first-child th:first-child {
   border-top-left-radius: 6px;
 }
-.noticeTable tr:first-child th:last-child {
+.styledTable tr:first-child th:last-child {
   border-top-right-radius: 6px;
 }
-.noticeTable td {
+.styledTable td {
   border-right: 1px solid #c6c9cc;
   border-bottom: 1px solid #c6c9cc;
 }
-.noticeTable td:first-child {
+.styledTable td:first-child {
   border-left: 1px solid #c6c9cc;
 }
-.noticeTable tr:nth-child(even) td {
+.styledTable tr:nth-child(even) td {
   background: #eaeaed;
 }
-.noticeTable tr:last-child td:first-child {
+.styledTable tr:last-child td:first-child {
   border-bottom-left-radius: 6px;
 }
-.noticeTable tr:last-child td:last-child {
+.styledTable tr:last-child td:last-child {
   border-bottom-right-radius: 6px;
 }
 
@@ -253,7 +261,7 @@ label {
   overflow: scroll;
   box-shadow: 0px 0px 10px 3px rgba(190, 190, 190, 0.6);
   margin-left: 5px;
-  position: fixed;
+  position: absolute;
   z-index: 50;
 }
 
@@ -291,7 +299,19 @@ label {
 }
 
 .versionContainer {
-  margin-top: 47px;
+  width: auto;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 15px;
+}
+
+.yourMajor{
+  width: 290px;
+  position: fixed;
+  bottom: 5px;
+  text-align: center;
+  font-size: 14px;
+  color: #94C9F3;
 }
 
 #majorNoticeToggle {
