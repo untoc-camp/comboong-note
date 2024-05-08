@@ -1,5 +1,3 @@
-const COLORS = ['#024d97', '#0275ce', '#02BA6E'];
-
 function renderPopup(schedules, majorNotices) {
   const scheduleList = document.getElementById('scheduleList');
   const noticeList = document.getElementById('noticeList');
@@ -72,15 +70,16 @@ async function fetchAndRender() {
 function tabEventListener() {
   const tabs = document.querySelectorAll('.tab-menu li');
   const contents = document.querySelectorAll('.tab-content .content');
-  const content_margin = document.getElementById('popup-edge');
+  const contentMargin = document.getElementById('popup-edge');
+  const versionBox = document.getElementById('versionContainer');
 
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => {
       contents.forEach((content) => content.classList.remove('current'));
       contents[index].classList.add('current');
 
-      content_margin.classList.remove('color-1', 'color-2', 'color-3');
-      content_margin.classList.add(`color-${index + 1}`);
+      contentMargin.classList.remove('color-1', 'color-2', 'color-3');
+      contentMargin.classList.add(`color-${index + 1}`);
     });
   });
 }

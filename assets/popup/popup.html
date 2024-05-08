@@ -11,15 +11,16 @@
     </ul>
     <div id="popup-edge" class="color-1">
       <div class="tab-content">
-        <div class="noticeTable content current">
-          <table id="scheduleList"></table>
+        <div class="scheduleTable content current">
+          <table id="scheduleList" class="styledTable"></table>
         </div>
         <div class="noticeTable content">
-          <table id="noticeList">
+          <table id="noticeList" class="styledTable">
             <tr>
               <td id="majorNoticeToggle"><img src="../img/drop_down.png" id="toggleImg"><b id="toggleText">일반공지 열기</b></td>
             </tr>
           </table>
+          <div class="yourMajor">정보컴퓨터공학부</div>
         </div>
         <div class="settings content">
           <ul id="settings">
@@ -63,19 +64,36 @@
                   </div>
               </div>
               <div class="settExplaination">공지사항 업데이트 주기</div>
-              <table class="versionContainer">
-                <tr>
-                  <td class="versionBox">
-                    <h3>버전</h3>
-                    <h3>버그문의</h3>
-                  </td>
-                  <td class="versionBox Right">
-                    <h3>ver 1.0.0</h3>
-                    <h3>lead@pusan.ac.kr</h3>
-                  </td>
-                </tr>
-              </table>
           </li>
+          <li>
+            <h2>학과 선택:</h2>
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <span class="dropbtn_content">Select</span>
+                    <img class="dropbtn_click" src="../img/drop_down.png">
+                </button>
+                <div class="dropdown-content">
+                    <div class="list">ㄱ 학과</div>
+                    <div class="list">ㄴ 학과</div>
+                    <div class="list">ㄷ 학과</div>
+                    <div class="list">ㄹ 학과</div>
+                    <div class="list">ㅁ 학과</div>
+                </div>
+            </div>
+            <div class="settExplaination">크롤링할 학과공지 페이지 선택</div>
+          </li>
+          <table class="versionContainer">
+            <tr>
+              <td class="versionBox">
+                <h3>버전</h3>
+                <h3>버그문의</h3>
+              </td>
+              <td class="versionBox Right">
+                <h3>ver 1.0.0</h3>
+                <h3>lead@pusan.ac.kr</h3>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
