@@ -10,6 +10,6 @@
   "permissions": ["tabs", "scripting", "storage", "alarms", "notifications"],
   "host_permissions": ["https://onestop.pusan.ac.kr/", "https://cse.pusan.ac.kr/cse/14651/subview.do"],
   "action": {
-    "default_popup": "assets/popup/popup.html"
+    "default_popup": "/assets/popup/popup.html"
   }
 }

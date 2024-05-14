@@ -1,3 +1,5 @@
+import { localStorageGet } from '/scripts/storage.js';
+
 function renderPopup(schedules, majorNotices) {
   const scheduleList = document.getElementById('scheduleList');
   const noticeList = document.getElementById('noticeList');
@@ -63,7 +65,7 @@ function resetRender() {
 }
 
 async function fetchAndRender() {
-  const { schedules = [], majorNotices = [] } = await chrome.storage.local.get(['schedules', 'majorNotices']);
+  const { schedules = [], majorNotices = [] } = await localStorageGet(['schedules', 'majorNotices']);
   renderPopup(schedules, majorNotices);
 }
 
@@ -71,7 +73,6 @@ function tabEventListener() {
   const tabs = document.querySelectorAll('.tab-menu li');
   const contents = document.querySelectorAll('.tab-content .content');
   const contentMargin = document.getElementById('popup-edge');
-  const versionBox = document.getElementById('versionContainer');
 
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => {
