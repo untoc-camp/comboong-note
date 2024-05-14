@@ -214,13 +214,147 @@ dropDownList();
 majorNoticesToggle();
 
 (async () => {
-  // 차후 설정한 주기 시간으로 변경
-  await chrome.runtime.sendMessage({ time: 1 });
+  let { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+    'modalOnOff',
+    'noticeDDay',
+    'crawlingPeriod',
+    'mymajor',
+  ]);
+  await chrome.runtime.sendMessage({
+    modalOnOff,
+    noticeDDay,
+    crawlingPeriod,
+    mymajor,
+  });
+  chrome.storage.onChanged.addListener(async (changes) => {
+    if (changes.majorNotices || changes.schedules) {
+      fetchAndRender();
+    }
+    ({ modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+      'modalOnOff',
+      'noticeDDay',
+      'crawlingPeriod',
+      'mymajor',
+    ]));
+
+    await chrome.runtime.sendMessage({
+      modalOnOff,
+      noticeDDay,
+      crawlingPeriod,
+      mymajor,
+    });
+  });
 })();
 
-chrome.alarms.onAlarm.addListener((alarm) => {
+chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === 'crawlingPeriod') {
+    // const schedules = await getSchedules();
+    // const majorNotices = await getMajorNotices();
+    // localStorageSet({ schedules, majorNotices });
     fetchAndRender();
-    alert('새로운 데이터가 업데이트 되었습니다!');
   }
 });
+
+// setTimeout(
+//   () =>
+//     localStorageSet({
+//       majorNotices: [
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1313281/artclView.do',
+//           articleTitle: '[ 일반공지 ] [학과활동] 2024학년도 1학기 학과활동 안내(4/4 기준 업데이트)',
+//           articleWriter: '정예랑',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1237068/artclView.do',
+//           articleTitle: '[ 일반공지 ] [졸업] 2024년 8월 졸업(수료)예정자 졸업요건 서류 제출 안내: ~7.12.(금)',
+//           articleWriter: '정예랑',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1135748/artclView.do',
+//           articleTitle: '[ 일반공지 ] [중요] 부산대학교 영어 능력 졸업인증제도 시행 지침 안내(2024.5월 개정)',
+//           articleWriter: '김지윤',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/972939/artclView.do',
+//           articleTitle: '[ 일반공지 ] 타과생의 부전공/복수전공 교육과정 적용 안내',
+//           articleWriter: '황유경',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/930641/artclView.do',
+//           articleTitle: '[ 일반공지 ] ☆★ 코로나19 확진 시 가이드 ☆★',
+//           articleWriter: '김지윤',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/813152/artclView.do',
+//           articleTitle: '[ 일반공지 ] 타과생의 부전공 신청에 관한 안내',
+//           articleWriter: '황유경',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/656247/artclView.do',
+//           articleTitle: '[ 일반공지 ] 학생지원시스템 학생 개인정보 확인 및 수정 안내',
+//           articleWriter: '유은화',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/408175/artclView.do',
+//           articleTitle: '[ 일반공지 ] [필독] 학과 공지사항 안내',
+//           articleWriter: '조교_유은화',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/407402/artclView.do',
+//           articleTitle: '[ 일반공지 ] 학과활동인정 외부행사/세미나 안내',
+//           articleWriter: '조교_김효경',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1532240/artclView.do',
+//           articleTitle: '[소프트웨어융합교육원] 제3회 PNU Coding Challenge 개최 안내 새글',
+//           articleWriter: '임현정',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1532175/artclView.do',
+//           articleTitle: '2024학년도 제34기 부산대학교 산학협력해외봉사단 참가자 추가 모집 안내 새글',
+//           articleWriter: '정예랑',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1532173/artclView.do',
+//           articleTitle: '[교수학습지원센터] 2024-1학기 특강형 학습전략 프로그램 운영 안내 새글',
+//           articleWriter: '정예랑',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1532137/artclView.do',
+//           articleTitle: '2024 하나 소셜벤처 유니버시티 창업교육 프로그램 모집 안내 새글',
+//           articleWriter: '정예랑',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1532133/artclView.do',
+//           articleTitle: '[수업]2024학년도 여름계절수업 교류 수학 안내[성균관대학교] 새글',
+//           articleWriter: '임현정',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1531881/artclView.do',
+//           articleTitle: '[수업] 2024학년도 여름계절수업 교류 수학 안내[서강대, 울산과학기술원(UNIST), 새글',
+//           articleWriter: '임현정',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1531832/artclView.do',
+//           articleTitle: '[2024학년도 하계 해외도전과 체험] 수요자 중심 전공봉사팀 모집 안내 새글',
+//           articleWriter: '정예랑',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1531726/artclView.do',
+//           articleTitle: '[소프트웨어융합교육원] ICT학점연계 프로젝트인턴십 사업설명회 개최 안내 새글',
+//           articleWriter: '배병주',
+//         },
+//         {
+//           articleHref: 'https://cse.pusan.ac.kr/bbs/cse/2605/1523966/artclView.do',
+//           articleTitle: '[장학] 2024 외국인 근로 선발 안내(~5/10)',
+//           articleWriter: '정예랑',
+//         },
+//         {
+//           articleHref: 'jiminiZZang',
+//           articleTitle: '언톡 접수하겠다',
+//           articleWriter: '임지민',
+//         },
+//       ],
+//     }),
+//   20000,
+// );
