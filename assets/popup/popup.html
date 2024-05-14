@@ -26,58 +26,58 @@
           <ul id="settings">
             <li>
               <h2>알림:</h2>
-              <label>
-                <input role="switch" type="checkbox" value=1/>
+              <label id="ModalSetting">
+                <input role="switch" type="checkbox" id="toggleSwitch" value="true">
               </label>
               <div class="settExplaination">모달창 알림 작동 유무</div>
             </li>
             <li>
               <h2>D-day:</h2>
-              <div class="dropdown">
+              <div class="dropdown" id="D-daySetting">
                   <button class="dropbtn">
                       <span class="dropbtn_content">Select</span>
                       <img class="dropbtn_click" src="../img/drop_down.png">
                   </button>
                   <div class="dropdown-content">
-                      <div class="list">당일 알림</div>
-                      <div class="list">1일 전</div>
-                      <div class="list">3일 전</div>
-                      <div class="list">5일 전</div>
-                      <div class="list">7일 전</div>
+                      <div class="list" value=0>당일 알림</div>
+                      <div class="list Selected" value=1>1일 전</div>
+                      <div class="list" value=3>3일 전</div>
+                      <div class="list" value=5>5일 전</div>
+                      <div class="list" value=7>7일 전</div>
                   </div>
               </div>
               <div class="settExplaination">학사 일정 알림 예정일</div>
           </li>
           <li>
               <h2>크롤링 주기:</h2>
-              <div class="dropdown">
+              <div class="dropdown" id="CrawlingSetting">
                   <button class="dropbtn">
                       <span class="dropbtn_content">Select</span>
                       <img class="dropbtn_click" src="../img/drop_down.png">
                   </button>
                   <div class="dropdown-content">
-                      <div class="list">1시간</div>
-                      <div class="list">3시간</div>
-                      <div class="list">6시간</div>
-                      <div class="list">12시간</div>
-                      <div class="list">24시간</div>
+                      <div class="list" value=1>1시간</div>
+                      <div class="list Selected" value=3>3시간</div>
+                      <div class="list" value=6>6시간</div>
+                      <div class="list" value=12>12시간</div>
+                      <div class="list" value=24>24시간</div>
                   </div>
               </div>
               <div class="settExplaination">공지사항 업데이트 주기</div>
           </li>
           <li>
             <h2>학과 선택:</h2>
-            <div class="dropdown">
+            <div class="dropdown" id="MajorSetting">
                 <button class="dropbtn">
                     <span class="dropbtn_content">Select</span>
                     <img class="dropbtn_click" src="../img/drop_down.png">
                 </button>
                 <div class="dropdown-content">
-                    <div class="list">ㄱ 학과</div>
-                    <div class="list">ㄴ 학과</div>
-                    <div class="list">ㄷ 학과</div>
-                    <div class="list">ㄹ 학과</div>
-                    <div class="list">ㅁ 학과</div>
+                    <div class="list Selected">정보컴퓨터공학부</div>
+                    <div class="list">의생명공학과</div>
+                    <div class="list">기계공학과</div>
+                    <div class="list">전기공학과</div>
+                    <div class="list">화학공학학과</div>
                 </div>
             </div>
             <div class="settExplaination">크롤링할 학과공지 페이지 선택</div>
