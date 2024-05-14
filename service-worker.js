@@ -20,11 +20,8 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
     const majorNotices = await getMajorNotices();
 
     localStorageSet({ schedules, majorNotices });
-<<<<<<< Updated upstream
     localStorageSet(settingData(true, 1, 3, '정보컴퓨터공학부'));
     chrome.storage.local.get((result) => console.log(result)); // 크롬 개발자도구에선 확장프로그램의 로컬 스토리지를 볼 수 없다고 해서, 콘솔에 띄웁니다
-=======
->>>>>>> Stashed changes
   }
 });
 
