@@ -1,4 +1,5 @@
-import { localStorageGet } from '/scripts/storage.js';
+import { localStorageSet, localStorageGet } from '/scripts/storage.js';
+import { settingData } from '/scripts/setting.js';
 
 function renderPopup(schedules, majorNotices) {
   const scheduleList = document.getElementById('scheduleList');
@@ -22,6 +23,7 @@ function renderPopup(schedules, majorNotices) {
     if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
       generalNotices.push(notice);
     }
+    
   });
 
   majorNotices.forEach(({ articleTitle, articleHref, articleWriter }) => {
@@ -102,21 +104,62 @@ function majorNoticesToggle() {
   });
 }
 
-function dropDownList() {
-  const dropdownBtns = document.querySelectorAll('.dropbtn');
-  const listItems = document.querySelectorAll('.list');
-
-  dropdownBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const dropdownContent = btn.nextElementSibling;
-      dropdownContent.style.display = dropdownContent.style.display === 'none' ? 'block' : 'none';
-    });
-  });
+async function initializeDropdown(dropdown, index) {
+  // 초기 상태 반영.
+  const listItems = dropdown.querySelectorAll('.list');
+  const dropbtnContent = dropdown.querySelector('.dropbtn_content');
+  const Setting = await localStorageGet("settingData");
 
   listItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      const dropbtnContent = item.closest('.dropdown').querySelector('.dropbtn_content');
-      dropbtnContent.textContent = item.textContent;
+    switch(index){
+      case 0:
+        dropbtnContent.textContent = (item.getAttribute('value')==Setting.settingData.noticeDDay) ? item.innerText : dropbtnContent.textContent;
+        break;
+      case 1:
+        dropbtnContent.textContent = (item.getAttribute('value')==Setting.settingData.crawlingPeriod) ? item.innerText : dropbtnContent.textContent;        break;
+      case 2:
+        dropbtnContent.textContent = Setting.settingData.mymajor;
+        break;
+    }
+  });
+}
+
+function dropDownList() {
+  const dropdowns = document.querySelectorAll('.dropdown');
+
+  dropdowns.forEach((dropdown, index) => {
+    const dropdownBtn = dropdown.querySelector('.dropbtn');
+    const listItems = dropdown.querySelectorAll('.list');
+
+    // 초기화 함수 호출
+    initializeDropdown(dropdown, index);
+
+    dropdownBtn.addEventListener('click', () => {
+      const dropdownContent = dropdownBtn.nextElementSibling;
+      dropdownContent.style.display = dropdownContent.style.display === 'none' ? 'block' : 'none';
+    });
+
+    listItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        // 모든 항목에서 'Selected' 클래스 제거
+        listItems.forEach((i) => i.classList.remove('Selected'));
+
+        // 선택한 항목에 'Selected' 클래스 추가
+        item.classList.add('Selected');
+
+        // 'Selected' 클래스를 가진 항목의 텍스트를 드롭다운 버튼에 표시
+        const selectedItem = dropdown.querySelector('.list.Selected');
+        const dropbtnContent = dropdown.querySelector('.dropbtn_content');
+        if (selectedItem) {
+          dropbtnContent.textContent = selectedItem.textContent;
+        }
+
+        //선택한 항목 스토리지에 저장
+        StoreSetting();
+
+        // 메뉴 닫기
+        item.closest('.dropdown-content').style.display = 'none';
+      });
     });
   });
 
@@ -130,8 +173,43 @@ function dropDownList() {
   });
 }
 
+async function updateToggleValues(){
+  const toggleSwitch = document.getElementById('toggleSwitch');
+  const Setting = await localStorageGet("settingData");
+
+  // 초기 상태 반영.
+  if (Setting.settingData.modalOnOff == 1) {
+    toggleSwitch.checked = true;
+  } else {
+    toggleSwitch.checked = false;
+  }
+
+  // 토글 스위치 클릭 시 value 값 변경
+  toggleSwitch.addEventListener('change', () => {
+    toggleSwitch.value = toggleSwitch.checked ? '1' : '0';
+    StoreSetting()
+  });
+}
+
+function StoreSetting() {
+  var modalValue = document.querySelector('#ModalSetting input[type="checkbox"]').checked ? 1 : 0;
+  var ddayValue = document.querySelector('#D-daySetting .Selected').getAttribute('value');
+  var crawlingValue = document.querySelector('#CrawlingSetting .Selected').getAttribute('value');
+  var majorValue = document.querySelector('#MajorSetting .Selected').textContent;
+
+  // const SettingData = {
+  //   ModalOnOff: modalValue,
+  //   NoticeDDay: ddayValue,
+  //   CrawlingPeriod: crawlingValue,
+  //   MyMajor: majorValue
+  // };
+
+  localStorageSet({settingData(modalValue, ddayValue, crawlingValue, majorValue)});
+}
+
 fetchAndRender();
 tabEventListener();
+updateToggleValues();
 dropDownList();
 majorNoticesToggle();
 
