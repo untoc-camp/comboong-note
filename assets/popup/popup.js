@@ -1,5 +1,5 @@
 import { localStorageSet, localStorageGet } from '/scripts/storage.js';
-import { settingData } from '/scripts/setting.js';
+import settingData from '/scripts/setting.js';
 
 function renderPopup(schedules, majorNotices) {
   const scheduleList = document.getElementById('scheduleList');
@@ -108,17 +108,17 @@ async function initializeDropdown(dropdown, index) {
   // 초기 상태 반영.
   const listItems = dropdown.querySelectorAll('.list');
   const dropbtnContent = dropdown.querySelector('.dropbtn_content');
-  const Setting = await localStorageGet("settingData");
+  const Setting = await localStorageGet();
 
   listItems.forEach((item) => {
     switch(index){
       case 0:
-        dropbtnContent.textContent = (item.getAttribute('value')==Setting.settingData.noticeDDay) ? item.innerText : dropbtnContent.textContent;
+        dropbtnContent.textContent = (item.getAttribute('value')==Setting.noticeDDay) ? item.innerText : dropbtnContent.textContent;
         break;
       case 1:
-        dropbtnContent.textContent = (item.getAttribute('value')==Setting.settingData.crawlingPeriod) ? item.innerText : dropbtnContent.textContent;        break;
+        dropbtnContent.textContent = (item.getAttribute('value')==Setting.crawlingPeriod) ? item.innerText : dropbtnContent.textContent;        break;
       case 2:
-        dropbtnContent.textContent = Setting.settingData.mymajor;
+        dropbtnContent.textContent = Setting.mymajor;
         break;
     }
   });
@@ -175,10 +175,10 @@ function dropDownList() {
 
 async function updateToggleValues(){
   const toggleSwitch = document.getElementById('toggleSwitch');
-  const Setting = await localStorageGet("settingData");
+  const Setting = await localStorageGet();
 
   // 초기 상태 반영.
-  if (Setting.settingData.modalOnOff == 1) {
+  if (Setting.modalOnOff == true) {
     toggleSwitch.checked = true;
   } else {
     toggleSwitch.checked = false;
@@ -186,7 +186,7 @@ async function updateToggleValues(){
 
   // 토글 스위치 클릭 시 value 값 변경
   toggleSwitch.addEventListener('change', () => {
-    toggleSwitch.value = toggleSwitch.checked ? '1' : '0';
+    toggleSwitch.value = toggleSwitch.checked ? 'true' : 'false';
     StoreSetting()
   });
 }
@@ -204,7 +204,7 @@ function StoreSetting() {
   //   MyMajor: majorValue
   // };
 
-  localStorageSet({settingData(modalValue, ddayValue, crawlingValue, majorValue)});
+  localStorageSet(settingData(modalValue, ddayValue, crawlingValue, majorValue));
 }
 
 fetchAndRender();
