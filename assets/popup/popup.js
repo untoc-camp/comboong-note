@@ -226,8 +226,9 @@ majorNoticesToggle();
     mymajor,
   });
   chrome.storage.onChanged.addListener(async (changes) => {
-    if (changes.majorNotices || changes.schedules) {
+    if (changes.fixedNotices || changes.nonfixedNotices || changes.schedules) {
       fetchAndRender();
+      alert('update!');
     }
     ({ modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
       'modalOnOff',
