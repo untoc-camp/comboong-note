@@ -60,7 +60,7 @@ function resetRender() {
 }
 
 async function fetchAndRender() {
-  const { schedules = [], fixedNotices = [], nonfixedNotices } = await localStorageGet(['schedules', 'fixedNotices', 'nonfixedNotices']);
+  const { schedules = [], fixedNotices = [], nonfixedNotices = [] } = await localStorageGet(['schedules', 'fixedNotices', 'nonfixedNotices']);
   renderPopup(schedules, fixedNotices, nonfixedNotices);
 }
 
