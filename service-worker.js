@@ -18,7 +18,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
     openModal();
     const schedules = await getSchedules();
     const majorNotices = await getMajorNotices();
-    const fixedNotices  = [];
+    const fixedNotices = [];
     const nonfixedNotices = [];
 
     schedules.forEach((schedule) => {
@@ -26,7 +26,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
       const eDay = schedule.duration.substr(17, 10);
       schedule.startDay = sDay;
       schedule.endDay = eDay;
-    })
+    });
 
     majorNotices.forEach((notice) => {
       if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
