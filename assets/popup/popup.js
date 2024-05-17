@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/no-unresolved
+/* eslint-disable import/no-unresolved  */
+/* eslint-disable no-param-reassign */
 import { localStorageSet, localStorageGet } from '../../scripts/storage.js';
-// eslint-disable-next-line import/no-unresolved
 import settingData from '../../scripts/setting.js';
 
 function resetRender() {
@@ -46,7 +46,7 @@ function renderPopup(schedules, fixedNotices, nonfixedNotices) {
     const link = document.createElement('a');
     link.href = articleHref;
     link.target = '_blank';
-    link.textContent = articleTitle;
+    link.textContent = articleTitle.replace(/ 새글/g, '');
     td.appendChild(link);
     td.appendChild(document.createTextNode(` (${articleWriter})`));
     noticeList.append(tr);
@@ -113,29 +113,27 @@ async function initializeDropdown(dropdown, index) {
     switch (index) {
       case 0:
         dropbtnContent.textContent =
-          item.getAttribute('value') === Setting.noticeDDay ? item.innerText : dropbtnContent.textContent;
+          parseInt(item.getAttribute('value'), 10) === Setting.noticeDDay ? item.innerText : dropbtnContent.textContent;
         break;
       case 1:
         dropbtnContent.textContent =
-          item.getAttribute('value') === Setting.crawlingPeriod ? item.innerText : dropbtnContent.textContent;
+          parseInt(item.getAttribute('value'), 10) === Setting.crawlingPeriod
+            ? item.innerText
+            : dropbtnContent.textContent;
         break;
       case 2:
         dropbtnContent.textContent = Setting.mymajor;
         break;
-<<<<<<< Updated upstream
-      default: 
-=======
       default:
->>>>>>> Stashed changes
         break;
     }
   });
 }
 
 function StoreSetting() {
-  const modalValue = !!document.querySelector('#ModalSetting input[type="checkbox"]').checked;
-  const ddayValue = document.querySelector('#D-daySetting .Selected').getAttribute('value');
-  const crawlingValue = document.querySelector('#CrawlingSetting .Selected').getAttribute('value');
+  const modalValue = document.querySelector('#ModalSetting input[type="checkbox"]').checked;
+  const ddayValue = parseInt(document.querySelector('#D-daySetting .Selected').getAttribute('value'), 10);
+  const crawlingValue = parseInt(document.querySelector('#CrawlingSetting .Selected').getAttribute('value'), 10);
   const majorValue = document.querySelector('#MajorSetting .Selected').textContent;
 
   // const SettingData = {
@@ -188,7 +186,6 @@ function dropDownList() {
     if (!e.target.matches('.dropbtn')) {
       const dropdownContents = document.querySelectorAll('.dropdown-content');
       dropdownContents.forEach((content) => {
-        // eslint-disable-next-line no-param-reassign
         content.style.display = 'none';
       });
     }
@@ -208,7 +205,7 @@ async function updateToggleValues() {
 
   // 토글 스위치 클릭 시 value 값 변경
   toggleSwitch.addEventListener('change', () => {
-    toggleSwitch.value = toggleSwitch.checked ? 'true' : 'false';
+    toggleSwitch.value = !!toggleSwitch.checked;
     StoreSetting();
   });
 }
