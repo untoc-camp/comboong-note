@@ -1,10 +1,10 @@
 import { localStorageSet, localStorageGet } from '/scripts/storage.js';
 import settingData from '/scripts/setting.js';
 
-function renderPopup(schedules, majorNotices) {
+function renderPopup(schedules, fixedNotices, nonfixedNotices) {
   const scheduleList = document.getElementById('scheduleList');
   const noticeList = document.getElementById('noticeList');
-  const generalNotices = [];
+  const majorNotices = fixedNotices.concat(nonfixedNotices);
 
   resetRender();
 
@@ -17,13 +17,6 @@ function renderPopup(schedules, majorNotices) {
     scheduleList.append(tr);
     tr.append(td1, td2);
     tr.classList.add('Schedule');
-  });
-
-  majorNotices.forEach((notice) => {
-    if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
-      generalNotices.push(notice);
-    }
-    
   });
 
   majorNotices.forEach(({ articleTitle, articleHref, articleWriter }) => {
@@ -39,7 +32,7 @@ function renderPopup(schedules, majorNotices) {
     tr.append(td);
     tr.classList.add('Notice');
 
-    generalNotices.forEach((notice) => {
+    fixedNotices.forEach((notice) => {
       if (notice.articleTitle == articleTitle) {
         tr.classList.add('generalNotice', 'hide');
       }
@@ -67,8 +60,8 @@ function resetRender() {
 }
 
 async function fetchAndRender() {
-  const { schedules = [], majorNotices = [] } = await localStorageGet(['schedules', 'majorNotices']);
-  renderPopup(schedules, majorNotices);
+  const { schedules = [], fixedNotices = [], nonfixedNotices } = await localStorageGet(['schedules', 'fixedNotices', 'nonfixedNotices']);
+  renderPopup(schedules, fixedNotices, nonfixedNotices);
 }
 
 function tabEventListener() {
