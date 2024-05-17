@@ -197,15 +197,11 @@ async function updateToggleValues() {
   const Setting = await localStorageGet();
 
   // 초기 상태 반영.
-  if (Setting.modalOnOff === true) {
-    toggleSwitch.checked = true;
-  } else {
-    toggleSwitch.checked = false;
-  }
+  toggleSwitch.checked = Setting.modalOnOff;
 
   // 토글 스위치 클릭 시 value 값 변경
   toggleSwitch.addEventListener('change', () => {
-    toggleSwitch.value = !!toggleSwitch.checked;
+    toggleSwitch.value = toggleSwitch.checked;
     StoreSetting();
   });
 }
