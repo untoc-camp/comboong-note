@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { getMajorNotices, getSchedules } from './scripts/crawling.js';
 import { createNotification, createNotificationSignal } from './scripts/notification.js';
 import settingData from './scripts/setting.js';
