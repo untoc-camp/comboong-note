@@ -47,18 +47,21 @@ const createNotification = () => {
 
     const { modalOnOff } = await chrome.storage.local.get('modalOnOff');
     if (modalOnOff === true && majorNoticeIsChange === true) {
-      chrome.notifications.create(
-        {
-          type: 'basic',
-          iconUrl: 'assets/img/iconImg.png',
-          title: '새 공지가 등록되었습니다.',
-          message: `${newNotice[0].articleTitle}`,
-          silent: false,
-        },
-        () => {},
-      );
-      newNotice.shift();
-      if (newNotice.length === 0) majorNoticeIsChange = false;
+      console.log(newNotice);
+      for (let i = 0; i < newNotice.length; i += 1) {
+        chrome.notifications.create(
+          {
+            type: 'basic',
+            iconUrl: 'assets/img/iconImg.png',
+            title: '새 공지가 등록되었습니다.',
+            message: `${newNotice[0].articleTitle}`,
+            silent: false,
+          },
+          () => {},
+        );
+      }
+      newNotice.length = 0;
+      majorNoticeIsChange = false;
     }
   });
 };
