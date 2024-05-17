@@ -1,5 +1,26 @@
-import { localStorageSet, localStorageGet } from '/scripts/storage.js';
-import settingData from '/scripts/setting.js';
+// eslint-disable-next-line import/no-unresolved
+import { localStorageSet, localStorageGet } from '../../scripts/storage.js';
+// eslint-disable-next-line import/no-unresolved
+import settingData from '../../scripts/setting.js';
+
+function resetRender() {
+  const scheduleList = document.getElementById('scheduleList');
+  const noticeList = document.getElementById('noticeList');
+  const scheduleTr = document.querySelectorAll('.Schedule');
+  const noticeTr = document.querySelectorAll('.Notice');
+  const text = document.getElementById('toggleText');
+
+  if (text.innerText === '일반공지 닫기') {
+    text.innerText = '일반공지 열기';
+  } // 일반공지 창이 열려있는 상태에서 resetRender함수가 돌았을떄 일반공지 토글창 텍스트가 뒤바뀌는것 방지
+
+  scheduleTr.forEach((schedule) => {
+    scheduleList.removeChild(schedule);
+  });
+  noticeTr.forEach((notice) => {
+    noticeList.removeChild(notice);
+  });
+}
 
 function renderPopup(schedules, fixedNotices, nonfixedNotices) {
   const scheduleList = document.getElementById('scheduleList');
@@ -33,34 +54,19 @@ function renderPopup(schedules, fixedNotices, nonfixedNotices) {
     tr.classList.add('Notice');
 
     fixedNotices.forEach((notice) => {
-      if (notice.articleTitle == articleTitle) {
+      if (notice.articleTitle === articleTitle) {
         tr.classList.add('generalNotice', 'hide');
       }
     });
   });
 }
 
-function resetRender() {
-  const scheduleList = document.getElementById('scheduleList');
-  const noticeList = document.getElementById('noticeList');
-  const scheduleTr = document.querySelectorAll('.Schedule');
-  const noticeTr = document.querySelectorAll('.Notice');
-  const text = document.getElementById('toggleText');
-
-  if (text.innerText == '일반공지 닫기') {
-    text.innerText = '일반공지 열기';
-  } // 일반공지 창이 열려있는 상태에서 resetRender함수가 돌았을떄 일반공지 토글창 텍스트가 뒤바뀌는것 방지
-
-  scheduleTr.forEach((schedule) => {
-    scheduleList.removeChild(schedule);
-  });
-  noticeTr.forEach((notice) => {
-    noticeList.removeChild(notice);
-  });
-}
-
 async function fetchAndRender() {
-  const { schedules = [], fixedNotices = [], nonfixedNotices = [] } = await localStorageGet(['schedules', 'fixedNotices', 'nonfixedNotices']);
+  const {
+    schedules = [],
+    fixedNotices = [],
+    nonfixedNotices = [],
+  } = await localStorageGet(['schedules', 'fixedNotices', 'nonfixedNotices']);
   renderPopup(schedules, fixedNotices, nonfixedNotices);
 }
 
@@ -89,7 +95,7 @@ function majorNoticesToggle() {
     generalNotices.forEach((tr) => {
       tr.classList.toggle('hide');
     });
-    if (text.innerText == '일반공지 열기') {
+    if (text.innerText === '일반공지 열기') {
       text.innerText = '일반공지 닫기';
     } else {
       text.innerText = '일반공지 열기';
@@ -104,19 +110,42 @@ async function initializeDropdown(dropdown, index) {
   const Setting = await localStorageGet();
 
   listItems.forEach((item) => {
-    switch(index){
+    switch (index) {
       case 0:
-        dropbtnContent.textContent = (item.getAttribute('value')==Setting.noticeDDay) ? item.innerText : dropbtnContent.textContent;
+        dropbtnContent.textContent =
+          item.getAttribute('value') === Setting.noticeDDay ? item.innerText : dropbtnContent.textContent;
         break;
       case 1:
-        dropbtnContent.textContent = (item.getAttribute('value')==Setting.crawlingPeriod) ? item.innerText : dropbtnContent.textContent;        break;
+        dropbtnContent.textContent =
+          item.getAttribute('value') === Setting.crawlingPeriod ? item.innerText : dropbtnContent.textContent;
+        break;
       case 2:
         dropbtnContent.textContent = Setting.mymajor;
         break;
+<<<<<<< Updated upstream
       default: 
+=======
+      default:
+>>>>>>> Stashed changes
         break;
     }
   });
+}
+
+function StoreSetting() {
+  const modalValue = !!document.querySelector('#ModalSetting input[type="checkbox"]').checked;
+  const ddayValue = document.querySelector('#D-daySetting .Selected').getAttribute('value');
+  const crawlingValue = document.querySelector('#CrawlingSetting .Selected').getAttribute('value');
+  const majorValue = document.querySelector('#MajorSetting .Selected').textContent;
+
+  // const SettingData = {
+  //   ModalOnOff: modalValue,
+  //   NoticeDDay: ddayValue,
+  //   CrawlingPeriod: crawlingValue,
+  //   MyMajor: majorValue
+  // };
+
+  localStorageSet(settingData(modalValue, ddayValue, crawlingValue, majorValue));
 }
 
 function dropDownList() {
@@ -149,11 +178,8 @@ function dropDownList() {
           dropbtnContent.textContent = selectedItem.textContent;
         }
 
-        //선택한 항목 스토리지에 저장
+        //  선택한 항목 스토리지에 저장
         StoreSetting();
-
-        // 메뉴 닫기
-        item.closest('.dropdown-content').style.display = 'none';
       });
     });
   });
@@ -162,18 +188,19 @@ function dropDownList() {
     if (!e.target.matches('.dropbtn')) {
       const dropdownContents = document.querySelectorAll('.dropdown-content');
       dropdownContents.forEach((content) => {
+        // eslint-disable-next-line no-param-reassign
         content.style.display = 'none';
       });
     }
   });
 }
 
-async function updateToggleValues(){
+async function updateToggleValues() {
   const toggleSwitch = document.getElementById('toggleSwitch');
   const Setting = await localStorageGet();
 
   // 초기 상태 반영.
-  if (Setting.modalOnOff == true) {
+  if (Setting.modalOnOff === true) {
     toggleSwitch.checked = true;
   } else {
     toggleSwitch.checked = false;
@@ -182,24 +209,8 @@ async function updateToggleValues(){
   // 토글 스위치 클릭 시 value 값 변경
   toggleSwitch.addEventListener('change', () => {
     toggleSwitch.value = toggleSwitch.checked ? 'true' : 'false';
-    StoreSetting()
+    StoreSetting();
   });
-}
-
-function StoreSetting() {
-  var modalValue = document.querySelector('#ModalSetting input[type="checkbox"]').checked ? 1 : 0;
-  var ddayValue = document.querySelector('#D-daySetting .Selected').getAttribute('value');
-  var crawlingValue = document.querySelector('#CrawlingSetting .Selected').getAttribute('value');
-  var majorValue = document.querySelector('#MajorSetting .Selected').textContent;
-
-  // const SettingData = {
-  //   ModalOnOff: modalValue,
-  //   NoticeDDay: ddayValue,
-  //   CrawlingPeriod: crawlingValue,
-  //   MyMajor: majorValue
-  // };
-
-  localStorageSet(settingData(modalValue, ddayValue, crawlingValue, majorValue));
 }
 
 fetchAndRender();
