@@ -60,7 +60,7 @@ function resetRender() {
 }
 
 async function fetchAndRender() {
-  const { schedules = [], fixedNotices = [], nonfixedNotices } = await localStorageGet(['schedules', 'fixedNotices', 'nonfixedNotices']);
+  const { schedules = [], fixedNotices = [], nonfixedNotices = [] } = await localStorageGet(['schedules', 'fixedNotices', 'nonfixedNotices']);
   renderPopup(schedules, fixedNotices, nonfixedNotices);
 }
 
@@ -112,6 +112,8 @@ async function initializeDropdown(dropdown, index) {
         dropbtnContent.textContent = (item.getAttribute('value')==Setting.crawlingPeriod) ? item.innerText : dropbtnContent.textContent;        break;
       case 2:
         dropbtnContent.textContent = Setting.mymajor;
+        break;
+      default: 
         break;
     }
   });
