@@ -29,15 +29,37 @@ function renderPopup(schedules, fixedNotices, nonfixedNotices) {
 
   resetRender();
 
-  schedules.forEach(({ content, duration }) => {
+  schedules.forEach(({ content, duration, startDay, endDay }, index) => {
     const tr = document.createElement('tr');
     const td1 = document.createElement('td');
     const td2 = document.createElement('td');
+    const yearTr = document.createElement('tr');
+    const yearTd = document.createElement('td');
+
+    //  공지 리스트의 첫 칸에 올해의 년도 삽입
+    if (index === 0) {
+      yearTd.textContent = startDay.substr(0, 4);
+      scheduleList.append(yearTr);
+      yearTr.append(yearTd);
+      yearTr.classList.add('Schedule');
+      yearTd.classList.add('Year');
+      yearTd.setAttribute('colspan', 2);
+    }
+
     td1.textContent = content;
-    td2.textContent = duration.replace(/2024-/g, '');
+    td2.textContent = duration.replaceAll(startDay.substr(0, 5), '');
     scheduleList.append(tr);
     tr.append(td1, td2);
     tr.classList.add('Schedule');
+
+    if (startDay.substr(0, 4) !== endDay.substr(0, 4)) {
+      yearTd.textContent = endDay.substr(0, 4);
+      scheduleList.append(yearTr);
+      yearTr.append(yearTd);
+      yearTr.classList.add('Schedule');
+      yearTd.classList.add('Year');
+      yearTd.setAttribute('colspan', 2);
+    }
   });
 
   majorNotices.forEach(({ articleTitle, articleHref, articleWriter }) => {
@@ -130,6 +152,27 @@ async function initializeDropdown(dropdown, index) {
   });
 }
 
+async function addLinkAndMajor(majorLink = 'https://cse.pusan.ac.kr/cse/14651/subview.do') {
+  const studentSupply = document.querySelector('.studentSupply');
+  const yourMajor = document.querySelector('.yourMajor');
+  const Setting = await localStorageGet();
+
+  yourMajor.innerText = Setting.mymajor;
+  console.log(Setting);
+
+  studentSupply.addEventListener('click', () => {
+    chrome.tabs.create({
+      url: 'https://onestop.pusan.ac.kr',
+    });
+  });
+
+  yourMajor.addEventListener('click', () => {
+    chrome.tabs.create({
+      url: majorLink,
+    });
+  });
+}
+
 function StoreSetting() {
   const modalValue = document.querySelector('#ModalSetting input[type="checkbox"]').checked;
   const ddayValue = parseInt(document.querySelector('#D-daySetting .Selected').getAttribute('value'), 10);
@@ -144,6 +187,7 @@ function StoreSetting() {
   // };
 
   localStorageSet(settingData(modalValue, ddayValue, crawlingValue, majorValue));
+  addLinkAndMajor();
 }
 
 function dropDownList() {
@@ -211,6 +255,7 @@ tabEventListener();
 updateToggleValues();
 dropDownList();
 majorNoticesToggle();
+addLinkAndMajor();
 
 (async () => {
   let { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([

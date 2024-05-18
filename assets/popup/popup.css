@@ -72,7 +72,7 @@ img.dropbtn_click {
 .tab-content .scheduleTable.current {
   display: inherit;
   border: 100%;
-  height: 550px;
+  height: 520px;
   overflow: auto;
 }
 
@@ -106,6 +106,10 @@ img.dropbtn_click {
   border-collapse: separate;
   border-spacing: 1;
   width: 100%;
+}
+.styledTable .Year {
+  font-weight: 900;
+  text-align: center;
 }
 .styledTable th,
 .styledTable td {
@@ -308,14 +312,26 @@ label {
 .yourMajor{
   width: 290px;
   position: fixed;
-  bottom: 5px;
+  bottom: 6px;
   text-align: center;
   font-size: 14px;
   color: #94C9F3;
+  cursor: pointer;
+}
+
+.studentSupply{
+  width: 290px;
+  position: fixed;
+  bottom: 6px;
+  text-align: center;
+  font-size: 14px;
+  color: #94C9F3;
+  cursor: pointer;
 }
 
 #majorNoticeToggle {
   text-align: center;
+  cursor: pointer;
 }
 
 .hide {
@@ -340,6 +356,6 @@ label {
   line-height: 16px;
 }
 
-#toggleText:hover {
+#majorNoticeToggle:hover #toggleText{
   color: blue;
 }
