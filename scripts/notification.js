@@ -1,5 +1,6 @@
 import { getMajorNotices, getSchedules } from './crawling.js';
 import { localStorageSet } from './storage.js';
+import preprocessAndUpload from './preprocess.js';
 
 const createNotificationSignal = () => {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -49,14 +50,7 @@ const createNotification = () => {
   chrome.alarms.onAlarm.addListener(async (alarm) => {
     const schedules = await getSchedules();
     const majorNotices = await getMajorNotices();
-    const fixedNotices = [];
-    const nonfixedNotices = [];
-    majorNotices.forEach((notice) => {
-      if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
-        fixedNotices.push(notice);
-      } else nonfixedNotices.push(notice);
-    });
-    localStorageSet({ schedules, fixedNotices, nonfixedNotices });
+    preprocessAndUpload(schedules, majorNotices);
     // setTimeout(() => {
     //   localStorageSet({
     //     fixedNotices: [
