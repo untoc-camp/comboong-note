@@ -1,14 +1,17 @@
+/* eslint-disable no-param-reassign */
 import { getMajorNotices, getSchedules } from './crawling.js';
 import { localStorageSet } from './storage.js';
 import preprocessAndUpload from './preprocess.js';
 
 const createNotificationSignal = () => {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log(request);
     if (request.crawlingPeriod) {
+      console.log('i created alarm');
       // 팝업 설정 페이지에서 설정한 크롤링 주기를 이용하여 알람을 생성합니다.
       chrome.alarms.create('crawlingPeriod', {
         delayInMinutes: 0,
-        periodInMinutes: 3,
+        periodInMinutes: 1,
       });
     }
   });
@@ -18,6 +21,7 @@ const createNotification = () => {
   let majorNoticeIsChange = false;
   const newNotice = [];
   chrome.storage.onChanged.addListener(async (changes) => {
+    console.log(changes);
     if (changes.nonfixedNotices) {
       majorNoticeIsChange = true;
       newNotice.push(changes.nonfixedNotices.newValue[0]);
@@ -50,7 +54,23 @@ const createNotification = () => {
   chrome.alarms.onAlarm.addListener(async (alarm) => {
     const schedules = await getSchedules();
     const majorNotices = await getMajorNotices();
-    preprocessAndUpload(schedules, majorNotices);
+    const fixedNotices = [];
+    const nonfixedNotices = [];
+
+    schedules.forEach((schedule) => {
+      const sDay = schedule.duration.substr(0, 10);
+      const eDay = schedule.duration.substr(17, 10);
+      schedule.startDay = sDay;
+      schedule.endDay = eDay;
+    });
+
+    majorNotices.forEach((notice) => {
+      if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
+        fixedNotices.push(notice);
+      } else nonfixedNotices.push(notice);
+    });
+    console.log('i got alarm!');
+    localStorageSet({ schedules, fixedNotices, nonfixedNotices });
     // setTimeout(() => {
     //   localStorageSet({
     //     fixedNotices: [

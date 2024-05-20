@@ -256,35 +256,42 @@ majorNoticesToggle();
 addLinkAndMajor();
 
 (async () => {
-  let { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
-    'modalOnOff',
-    'noticeDDay',
-    'crawlingPeriod',
-    'mymajor',
-  ]);
-  await chrome.runtime.sendMessage({
-    modalOnOff,
-    noticeDDay,
-    crawlingPeriod,
-    mymajor,
-  });
-  chrome.storage.onChanged.addListener(async (changes) => {
-    if (changes.fixedNotices || changes.nonfixedNotices || changes.schedules) {
-      fetchAndRender();
-    }
-    ({ modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+  const { initialStart } = await chrome.storage.local.get('initialStart');
+  if (initialStart === true) {
+    const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
       'modalOnOff',
       'noticeDDay',
       'crawlingPeriod',
       'mymajor',
-    ]));
-
+    ]);
     await chrome.runtime.sendMessage({
       modalOnOff,
       noticeDDay,
       crawlingPeriod,
       mymajor,
     });
+
+    localStorageSet({ initialStart: false });
+  }
+
+  chrome.storage.onChanged.addListener(async (changes) => {
+    if (changes.fixedNotices || changes.nonfixedNotices || changes.schedules) {
+      fetchAndRender();
+    }
+    if (!changes.initialStart) {
+      const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+        'modalOnOff',
+        'noticeDDay',
+        'crawlingPeriod',
+        'mymajor',
+      ]);
+      await chrome.runtime.sendMessage({
+        modalOnOff,
+        noticeDDay,
+        crawlingPeriod,
+        mymajor,
+      });
+    }
   });
 })();
 
