@@ -156,9 +156,7 @@ async function addLinkAndMajor(majorLink = 'https://cse.pusan.ac.kr/cse/14651/su
   const studentSupply = document.querySelector('.studentSupply');
   const yourMajor = document.querySelector('.yourMajor');
   const Setting = await localStorageGet();
-
   yourMajor.innerText = Setting.mymajor;
-  console.log(Setting);
 
   studentSupply.addEventListener('click', () => {
     chrome.tabs.create({
