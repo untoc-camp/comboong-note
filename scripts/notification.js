@@ -21,11 +21,33 @@ const createNotification = () => {
   const newNotice = [];
   chrome.storage.onChanged.addListener(async (changes) => {
     console.log(changes);
-    if (changes.nonfixedNotices) {
-      newNotice.push(changes.nonfixedNotices.newValue[0]);
-    }
+    // if (changes.nonfixedNotices) {
+    //   newNotice.push(changes.nonfixedNotices.newValue[0]);
+    // }
+    // if (changes.fixedNotices) {
+    //   newNotice.push(changes.fixedNotices.newValue[0]);
+    // }
     if (changes.fixedNotices) {
-      newNotice.push(changes.fixedNotices.newValue[0]);
+      if (changes.fixedNotices.oldValue) {
+        for (let i = 0; i < changes.fixedNotices.newValue.length; i += 1) {
+          if (changes.fixedNotices.oldValue[i].articleTitle === changes.fixedNotices.newValue[i].articleTitle) {
+            break;
+          } else {
+            newNotice.push(changes.fixedNotices.newValue[i]);
+          }
+        }
+      }
+    }
+    if (changes.nonfixedNotices) {
+      if (changes.nonfixedNotices.oldValue) {
+        for (let i = 0; i < changes.nonfixedNotices.newValue.length; i += 1) {
+          if (changes.nonfixedNotices.oldValue[i].articleTitle === changes.nonfixedNotices.newValue[i].articleTitle) {
+            break;
+          } else {
+            newNotice.push(changes.nonfixedNotices.newValue[i]);
+          }
+        }
+      }
     }
     console.log(newNotice);
 
@@ -66,7 +88,9 @@ const createNotification = () => {
       } else nonfixedNotices.push(notice);
     });
     console.log('i got alarm!');
-    localStorageSet({ schedules, fixedNotices, nonfixedNotices });
+    if (schedules.length !== 0 && fixedNotices.length !== 0 && nonfixedNotices.length !== 0) {
+      localStorageSet({ schedules, fixedNotices, nonfixedNotices });
+    }
     // setTimeout(() => {
     //   localStorageSet({
     //     fixedNotices: [
