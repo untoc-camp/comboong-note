@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'SCDream';
+    font-weight: 400;
+    src: url('/assets/fonts/SCDream4.otf');
+  }
+body {
+    font-family: SCDream;
+    width: 400px;
+    background-color: white;
+}
+h2 {
+    text-align: top;
+    vertical-align: top;
+}
+img {
+    width: 57px;
+}
+.commentbox {
+    height: 200px;
+    background-color: #F5F5F5;
+    vertical-align: middle;
+}
+li {
+    vertical-align: middle;
+    list-style-type: none;
+}
+li img{
+    width: 40px;
+}
+/* .error-text{
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+} */
+.error-imform {
+    width: 385px;
+    height: 40px;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #105395;
+    padding-top: 20px;
+    color: white;
+    border-radius: 0px 30px;
+}
+
