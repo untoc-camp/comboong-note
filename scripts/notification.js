@@ -1,35 +1,50 @@
+/* eslint-disable no-param-reassign */
 import { getMajorNotices, getSchedules } from './crawling.js';
 import { localStorageSet } from './storage.js';
 import preprocessAndUpload from './preprocess.js';
 
 const createNotificationSignal = () => {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log(request);
     if (request.crawlingPeriod) {
+      console.log('i created alarm');
       // 팝업 설정 페이지에서 설정한 크롤링 주기를 이용하여 알람을 생성합니다.
       chrome.alarms.create('crawlingPeriod', {
         delayInMinutes: 0,
-        periodInMinutes: 3,
+        periodInMinutes: 1,
       });
     }
   });
 };
 
 const createNotification = () => {
-  let majorNoticeIsChange = false;
   const newNotice = [];
   chrome.storage.onChanged.addListener(async (changes) => {
-    if (changes.nonfixedNotices) {
-      majorNoticeIsChange = true;
-      newNotice.push(changes.nonfixedNotices.newValue[0]);
-    }
+    console.log(changes);
     if (changes.fixedNotices) {
-      majorNoticeIsChange = true;
-      newNotice.push(changes.fixedNotices.newValue[0]);
+      try {
+        for (let i = 0; i < changes.fixedNotices.newValue.length; i += 1) {
+          if (changes.fixedNotices.oldValue[0].articleTitle === changes.fixedNotices.newValue[i].articleTitle) {
+            break;
+          }
+          newNotice.push(changes.fixedNotices.newValue[i]);
+        }
+      } catch (err) {}
+    }
+    if (changes.nonfixedNotices) {
+      try {
+        for (let i = 0; i < changes.nonfixedNotices.newValue.length; i += 1) {
+          if (changes.nonfixedNotices.oldValue[0].articleTitle === changes.nonfixedNotices.newValue[i].articleTitle) {
+            break;
+          }
+          newNotice.push(changes.nonfixedNotices.newValue[i]);
+        }
+      } catch (err) {}
     }
     console.log(newNotice);
 
     const { modalOnOff } = await chrome.storage.local.get('modalOnOff');
-    if (modalOnOff === true && majorNoticeIsChange === true) {
+    if (modalOnOff === true && newNotice.length > 0) {
       for (let i = 0; i < newNotice.length; i += 1) {
         chrome.notifications.create(
           {
@@ -43,14 +58,32 @@ const createNotification = () => {
         );
       }
       newNotice.length = 0;
-      majorNoticeIsChange = false;
     }
   });
 
   chrome.alarms.onAlarm.addListener(async (alarm) => {
     const schedules = await getSchedules();
     const majorNotices = await getMajorNotices();
-    preprocessAndUpload(schedules, majorNotices);
+    const fixedNotices = [];
+    const nonfixedNotices = [];
+
+    // 네트워크 연결 오류 시 예외 처리 필요
+    schedules.forEach((schedule) => {
+      const sDay = schedule.duration.substr(0, 10);
+      const eDay = schedule.duration.substr(17, 10);
+      schedule.startDay = sDay;
+      schedule.endDay = eDay;
+    });
+
+    majorNotices.forEach((notice) => {
+      if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
+        fixedNotices.push(notice);
+      } else nonfixedNotices.push(notice);
+    });
+    console.log('i got alarm!');
+    if (schedules.length !== 0 && fixedNotices.length !== 0 && nonfixedNotices.length !== 0) {
+      localStorageSet({ schedules, fixedNotices, nonfixedNotices });
+    }
     // setTimeout(() => {
     //   localStorageSet({
     //     fixedNotices: [
