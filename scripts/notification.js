@@ -68,22 +68,33 @@ const createNotification = () => {
     const nonfixedNotices = [];
 
     // 네트워크 연결 오류 시 예외 처리 필요
-    schedules.forEach((schedule) => {
-      const sDay = schedule.duration.substr(0, 10);
-      const eDay = schedule.duration.substr(17, 10);
-      schedule.startDay = sDay;
-      schedule.endDay = eDay;
-    });
 
-    majorNotices.forEach((notice) => {
-      if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
-        fixedNotices.push(notice);
-      } else nonfixedNotices.push(notice);
-    });
-    console.log('i got alarm!');
-    if (schedules.length !== 0 && fixedNotices.length !== 0 && nonfixedNotices.length !== 0) {
-      localStorageSet({ schedules, fixedNotices, nonfixedNotices });
+    while (true) {
+      try {
+        schedules.forEach((schedule) => {
+          const sDay = schedule.duration.substr(0, 10);
+          const eDay = schedule.duration.substr(17, 10);
+          schedule.startDay = sDay;
+          schedule.endDay = eDay;
+        });
+
+        majorNotices.forEach((notice) => {
+          if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
+            fixedNotices.push(notice);
+          } else nonfixedNotices.push(notice);
+        });
+        console.log('i got alarm!');
+        localStorageSet({ schedules, fixedNotices, nonfixedNotices });
+        break;
+      } catch (err) {
+        console.log('Error occured: ', err);
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((resolve, reject) => {
+          setTimeout(resolve, 5000);
+        });
+      }
     }
+
     // setTimeout(() => {
     //   localStorageSet({
     //     fixedNotices: [
