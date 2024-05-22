@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { getMajorNotices, getSchedules } from './scripts/crawling.js';
-import { createNotification, createNotificationSignal } from './scripts/notification.js';
+import { createDDayNotification, createNotification, createNotificationSignal } from './scripts/notification.js';
 import { localStorageGet, localStorageSet } from './scripts/storage.js';
 import settingData from './scripts/setting.js';
 import preprocessAndUpload from './scripts/preprocess.js';
@@ -40,8 +40,9 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
       schedules,
       fixedNotices,
       nonfixedNotices,
+      todayDate: new Date().getDate(),
       modalOnOff: true,
-      noticeDDay: 1,
+      noticeDDay: 5,
       crawlingPeriod: 1,
       mymajor: '정보컴퓨터공학부',
       initialStart: true,
@@ -52,3 +53,4 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 
 createNotificationSignal();
 createNotification();
+createDDayNotification();
