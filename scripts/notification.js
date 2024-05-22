@@ -11,7 +11,7 @@ const createNotificationSignal = () => {
       // 팝업 설정 페이지에서 설정한 크롤링 주기를 이용하여 알람을 생성합니다.
       chrome.alarms.create('crawlingPeriod', {
         delayInMinutes: 0,
-        periodInMinutes: 60,
+        periodInMinutes: 1,
       });
     }
   });
@@ -30,22 +30,20 @@ const createNotification = () => {
     if (changes.fixedNotices) {
       if (changes.fixedNotices.oldValue) {
         for (let i = 0; i < changes.fixedNotices.newValue.length; i += 1) {
-          if (changes.fixedNotices.oldValue[i].articleTitle === changes.fixedNotices.newValue[i].articleTitle) {
+          if (changes.fixedNotices.oldValue[0].articleTitle === changes.fixedNotices.newValue[i].articleTitle) {
             break;
-          } else {
-            newNotice.push(changes.fixedNotices.newValue[i]);
           }
+          newNotice.push(changes.fixedNotices.newValue[i]);
         }
       }
     }
     if (changes.nonfixedNotices) {
       if (changes.nonfixedNotices.oldValue) {
         for (let i = 0; i < changes.nonfixedNotices.newValue.length; i += 1) {
-          if (changes.nonfixedNotices.oldValue[i].articleTitle === changes.nonfixedNotices.newValue[i].articleTitle) {
+          if (changes.nonfixedNotices.oldValue[0].articleTitle === changes.nonfixedNotices.newValue[i].articleTitle) {
             break;
-          } else {
-            newNotice.push(changes.nonfixedNotices.newValue[i]);
           }
+          newNotice.push(changes.nonfixedNotices.newValue[i]);
         }
       }
     }
