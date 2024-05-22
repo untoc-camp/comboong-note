@@ -21,31 +21,25 @@ const createNotification = () => {
   const newNotice = [];
   chrome.storage.onChanged.addListener(async (changes) => {
     console.log(changes);
-    // if (changes.nonfixedNotices) {
-    //   newNotice.push(changes.nonfixedNotices.newValue[0]);
-    // }
-    // if (changes.fixedNotices) {
-    //   newNotice.push(changes.fixedNotices.newValue[0]);
-    // }
     if (changes.fixedNotices) {
-      if (changes.fixedNotices.oldValue) {
+      try {
         for (let i = 0; i < changes.fixedNotices.newValue.length; i += 1) {
           if (changes.fixedNotices.oldValue[0].articleTitle === changes.fixedNotices.newValue[i].articleTitle) {
             break;
           }
           newNotice.push(changes.fixedNotices.newValue[i]);
         }
-      }
+      } catch (err) {}
     }
     if (changes.nonfixedNotices) {
-      if (changes.nonfixedNotices.oldValue) {
+      try {
         for (let i = 0; i < changes.nonfixedNotices.newValue.length; i += 1) {
           if (changes.nonfixedNotices.oldValue[0].articleTitle === changes.nonfixedNotices.newValue[i].articleTitle) {
             break;
           }
           newNotice.push(changes.nonfixedNotices.newValue[i]);
         }
-      }
+      } catch (err) {}
     }
     console.log(newNotice);
 
@@ -73,6 +67,7 @@ const createNotification = () => {
     const fixedNotices = [];
     const nonfixedNotices = [];
 
+    // 네트워크 연결 오류 시 예외 처리 필요
     schedules.forEach((schedule) => {
       const sDay = schedule.duration.substr(0, 10);
       const eDay = schedule.duration.substr(17, 10);
