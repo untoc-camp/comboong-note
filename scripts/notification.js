@@ -42,7 +42,7 @@ const createDDayNotification = async () => {
           {
             type: 'basic',
             iconUrl: 'assets/img/iconImg.png',
-            title: `학사일정 D-Day - {${dDay}}`,
+            title: `학사일정 알림 - {D-${dDay}}`,
             message: `${schedules[i].content}`,
             silent: false,
           },
