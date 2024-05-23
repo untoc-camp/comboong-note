@@ -42,7 +42,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
       nonfixedNotices,
       todayDate: new Date().getDate(),
       modalOnOff: true,
-      noticeDDay: 5,
+      noticeDDay: 3,
       crawlingPeriod: 1,
       mymajor: '정보컴퓨터공학부',
       initialStart: true,

@@ -28,22 +28,26 @@ const createDDayNotification = async () => {
 
       for (let i = 0; i < schedules.length; i += 1) {
         const scheduledDay = new Date(schedules[i].startDay);
-        const dDay = (scheduledDay - todayDate) / aDay;
+        let dDay = (scheduledDay - todayDate) / aDay;
 
         if (dDay > noticeDDay) {
           break;
+        } else if (dDay < 0) {
+          dDay = 'Day';
         } else {
-          chrome.notifications.create(
-            {
-              type: 'basic',
-              iconUrl: 'assets/img/iconImg.png',
-              title: `학사일정 D-Day - {${dDay}}`,
-              message: `${schedules[i].content}`,
-              silent: false,
-            },
-            () => {},
-          );
+          dDay = Math.ceil(dDay);
         }
+
+        chrome.notifications.create(
+          {
+            type: 'basic',
+            iconUrl: 'assets/img/iconImg.png',
+            title: `학사일정 D-Day - {${dDay}}`,
+            message: `${schedules[i].content}`,
+            silent: false,
+          },
+          () => {},
+        );
       }
     }
   });
