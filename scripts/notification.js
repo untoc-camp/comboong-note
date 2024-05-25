@@ -23,34 +23,64 @@ const createDDayNotification = async () => {
     if (changes.todayDate || changes.noticeDDay) {
       const { schedules } = await localStorageGet('schedules');
       const { noticeDDay } = await localStorageGet('noticeDDay');
+      const { modalOnOff } = await chrome.storage.local.get('modalOnOff');
       const todayDate = new Date();
-      console.log(noticeDDay);
 
-      for (let i = 0; i < schedules.length; i += 1) {
-        const scheduledDay = new Date(schedules[i].startDay);
-        let dDay = (scheduledDay - todayDate) / aDay;
+      if (modalOnOff === true) {
+        for (let i = 0; i < schedules.length; i += 1) {
+          const scheduledDay = new Date(schedules[i].startDay);
+          let dDay = (scheduledDay - todayDate) / aDay;
 
-        if (dDay > noticeDDay) {
-          break;
-        } else if (dDay < 0) {
-          dDay = 'Day';
-        } else {
-          dDay = Math.ceil(dDay);
+          if (dDay > noticeDDay) {
+            break;
+          } else if (dDay < 0) {
+            dDay = 'Day';
+          } else {
+            dDay = Math.ceil(dDay);
+          }
+
+          chrome.notifications.create(
+            {
+              type: 'basic',
+              iconUrl: 'assets/img/iconImg.png',
+              title: `학사일정 알림 - [D-${dDay}]`,
+              message: `${schedules[i].content}`,
+              silent: false,
+            },
+            () => {},
+          );
         }
-
-        chrome.notifications.create(
-          {
-            type: 'basic',
-            iconUrl: 'assets/img/iconImg.png',
-            title: `학사일정 알림 - {D-${dDay}}`,
-            message: `${schedules[i].content}`,
-            silent: false,
-          },
-          () => {},
-        );
       }
     }
   });
+};
+
+const updateStorageByAlarm = async (alarm) => {
+  const schedules = await getSchedules();
+  const majorNotices = await getMajorNotices();
+  const fixedNotices = [];
+  const nonfixedNotices = [];
+
+  // 네트워크 오류로 인해 schedules, majorNotices가 null일 경우 5초 뒤에 다시 시도합니다.
+  if (schedules === null || majorNotices === null) {
+    setTimeout(updateStorageByAlarm, 5000);
+    return;
+  }
+
+  schedules.forEach((schedule) => {
+    const sDay = schedule.duration.substr(0, 10);
+    const eDay = schedule.duration.substr(17, 10);
+    schedule.startDay = sDay;
+    schedule.endDay = eDay;
+  });
+
+  majorNotices.forEach((notice) => {
+    if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
+      fixedNotices.push(notice);
+    } else nonfixedNotices.push(notice);
+  });
+  console.log('i got alarm!');
+  localStorageSet({ schedules, fixedNotices, nonfixedNotices, todayDate: new Date().getDate() });
 };
 
 const createNotification = () => {
@@ -65,7 +95,9 @@ const createNotification = () => {
           }
           newNotice.push(changes.fixedNotices.newValue[i]);
         }
-      } catch (err) {}
+      } catch (err) {
+        // 아무것도 실행 X
+      }
     }
     if (changes.nonfixedNotices) {
       try {
@@ -75,9 +107,11 @@ const createNotification = () => {
           }
           newNotice.push(changes.nonfixedNotices.newValue[i]);
         }
-      } catch (err) {}
+      } catch (err) {
+        // 아무것도 실행 X
+      }
     }
-    console.log(newNotice);
+    console.log('newNotice : ', newNotice);
 
     const { modalOnOff } = await chrome.storage.local.get('modalOnOff');
     if (modalOnOff === true && newNotice.length > 0) {
@@ -87,7 +121,7 @@ const createNotification = () => {
             type: 'basic',
             iconUrl: 'assets/img/iconImg.png',
             title: '새 공지가 등록되었습니다.',
-            message: `${newNotice[0].articleTitle}`,
+            message: `${newNotice[i].articleTitle}`,
             silent: false,
           },
           () => {},
@@ -97,40 +131,7 @@ const createNotification = () => {
     }
   });
 
-  chrome.alarms.onAlarm.addListener(async (alarm) => {
-    const schedules = await getSchedules();
-    const majorNotices = await getMajorNotices();
-    const fixedNotices = [];
-    const nonfixedNotices = [];
-
-    // 네트워크 연결 오류 시 예외 처리 필요
-
-    while (true) {
-      try {
-        schedules.forEach((schedule) => {
-          const sDay = schedule.duration.substr(0, 10);
-          const eDay = schedule.duration.substr(17, 10);
-          schedule.startDay = sDay;
-          schedule.endDay = eDay;
-        });
-
-        majorNotices.forEach((notice) => {
-          if (notice.articleTitle.startsWith('[ 일반공지 ]')) {
-            fixedNotices.push(notice);
-          } else nonfixedNotices.push(notice);
-        });
-        console.log('i got alarm!');
-        localStorageSet({ schedules, fixedNotices, nonfixedNotices, todayDate: new Date().getDate() });
-        break;
-      } catch (err) {
-        console.log('Error occured: ', err);
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise((resolve, reject) => {
-          setTimeout(resolve, 5000);
-        });
-      }
-    }
-  });
+  chrome.alarms.onAlarm.addListener(updateStorageByAlarm);
 };
 
 export { createNotificationSignal, createDDayNotification, createNotification };
