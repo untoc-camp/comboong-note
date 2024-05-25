@@ -256,9 +256,9 @@ majorNoticesToggle();
 addLinkAndMajor();
 
 (async () => {
-  const { initialStart } = await chrome.storage.local.get('initialStart');
+  const { initialStart } = await localStorageGet('initialStart');
   if (initialStart === true) {
-    const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+    const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await localStorageGet([
       'modalOnOff',
       'noticeDDay',
       'crawlingPeriod',
@@ -279,7 +279,7 @@ addLinkAndMajor();
       fetchAndRender();
     }
     if (!changes.initialStart) {
-      const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+      const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await localStorageGet([
         'modalOnOff',
         'noticeDDay',
         'crawlingPeriod',

@@ -102,7 +102,8 @@ img.dropbtn_click {
   padding: 15px;
 }
 
-.styledTable, table {
+.styledTable,
+table {
   border-collapse: separate;
   border-spacing: 1;
   width: 100%;
@@ -300,6 +301,7 @@ label {
 
 .versionBox.Right {
   text-align: right;
+  padding-right: 15px;
 }
 
 .versionContainer {
@@ -309,23 +311,23 @@ label {
   bottom: 15px;
 }
 
-.yourMajor{
+.yourMajor {
   width: 290px;
   position: fixed;
   bottom: 6px;
   text-align: center;
   font-size: 14px;
-  color: #94C9F3;
+  color: #94c9f3;
   cursor: pointer;
 }
 
-.studentSupply{
+.studentSupply {
   width: 290px;
   position: fixed;
   bottom: 6px;
   text-align: center;
   font-size: 14px;
-  color: #94C9F3;
+  color: #94c9f3;
   cursor: pointer;
 }
 
@@ -356,6 +358,6 @@ label {
   line-height: 16px;
 }
 
-#majorNoticeToggle:hover #toggleText{
+#majorNoticeToggle:hover #toggleText {
   color: blue;
 }

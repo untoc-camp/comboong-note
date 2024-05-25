@@ -1,17 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { getMajorNotices, getSchedules } from './crawling.js';
 import { localStorageGet, localStorageSet } from './storage.js';
-import preprocessAndUpload from './preprocess.js';
 
 const createNotificationSignal = () => {
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log(request);
+  chrome.runtime.onMessage.addListener((request) => {
     if (request.crawlingPeriod) {
-      console.log('i created alarm');
       // 팝업 설정 페이지에서 설정한 크롤링 주기를 이용하여 알람을 생성합니다.
       chrome.alarms.create('crawlingPeriod', {
         delayInMinutes: 0,
-        periodInMinutes: 60,
+        periodInMinutes: request.crawlingPeriod * 60,
       });
     }
   });
@@ -23,10 +20,10 @@ const createDDayNotification = async () => {
     if (changes.todayDate || changes.noticeDDay) {
       const { schedules } = await localStorageGet('schedules');
       const { noticeDDay } = await localStorageGet('noticeDDay');
-      const { modalOnOff } = await chrome.storage.local.get('modalOnOff');
+      const { modalOnOff } = await localStorageGet('modalOnOff');
       const todayDate = new Date();
 
-      if (modalOnOff === true) {
+      if (modalOnOff) {
         for (let i = 0; i < schedules.length; i += 1) {
           const scheduledDay = new Date(schedules[i].startDay);
           let dDay = (scheduledDay - todayDate) / aDay;
@@ -55,7 +52,7 @@ const createDDayNotification = async () => {
   });
 };
 
-const updateStorageByAlarm = async (alarm) => {
+const updateStorageByAlarm = async () => {
   const schedules = await getSchedules();
   const majorNotices = await getMajorNotices();
   const fixedNotices = [];
@@ -79,42 +76,35 @@ const updateStorageByAlarm = async (alarm) => {
       fixedNotices.push(notice);
     } else nonfixedNotices.push(notice);
   });
-  console.log('i got alarm!');
   localStorageSet({ schedules, fixedNotices, nonfixedNotices, todayDate: new Date().getDate() });
 };
 
 const createNotification = () => {
   const newNotice = [];
   chrome.storage.onChanged.addListener(async (changes) => {
-    console.log(changes);
     if (changes.fixedNotices) {
-      try {
+      if (changes.fixedNotices.oldValue) {
         for (let i = 0; i < changes.fixedNotices.newValue.length; i += 1) {
           if (changes.fixedNotices.oldValue[0].articleTitle === changes.fixedNotices.newValue[i].articleTitle) {
             break;
           }
           newNotice.push(changes.fixedNotices.newValue[i]);
         }
-      } catch (err) {
-        // 아무것도 실행 X
       }
     }
     if (changes.nonfixedNotices) {
-      try {
+      if (changes.nonfixedNotices.oldValue) {
         for (let i = 0; i < changes.nonfixedNotices.newValue.length; i += 1) {
           if (changes.nonfixedNotices.oldValue[0].articleTitle === changes.nonfixedNotices.newValue[i].articleTitle) {
             break;
           }
           newNotice.push(changes.nonfixedNotices.newValue[i]);
         }
-      } catch (err) {
-        // 아무것도 실행 X
       }
     }
-    console.log('newNotice : ', newNotice);
 
     const { modalOnOff } = await chrome.storage.local.get('modalOnOff');
-    if (modalOnOff === true && newNotice.length > 0) {
+    if (modalOnOff && newNotice.length > 0) {
       for (let i = 0; i < newNotice.length; i += 1) {
         chrome.notifications.create(
           {
