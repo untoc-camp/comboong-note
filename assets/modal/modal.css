@@ -18,7 +18,7 @@ img {
 .commentbox {
     height: 200px;
     background-color: #F5F5F5;
-    display: flex; /*flex- container 에만 영향을 줌*/
+    display: flex;
 }
 li {
     vertical-align: middle;
