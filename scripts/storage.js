@@ -1,5 +1,6 @@
 const localStorageSet = (content) => {
   chrome.storage.local.set(content);
+  console.log(content);
 };
 
 const localStorageGet = (keys) => {

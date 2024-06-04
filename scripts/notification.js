@@ -8,7 +8,8 @@ const createNotificationSignal = () => {
       // 팝업 설정 페이지에서 설정한 크롤링 주기를 이용하여 알람을 생성합니다.
       chrome.alarms.create('crawlingPeriod', {
         delayInMinutes: 0,
-        periodInMinutes: request.crawlingPeriod * 60,
+        // periodInMinutes: request.crawlingPeriod * 60,
+        periodInMinutes: 1,
       });
     }
   });
@@ -17,6 +18,7 @@ const createNotificationSignal = () => {
 const createDDayNotification = async () => {
   const aDay = 1000 * 60 * 60 * 24;
   chrome.storage.onChanged.addListener(async (changes) => {
+    console.log(changes);
     if (changes.todayDate || changes.noticeDDay) {
       const { schedules } = await localStorageGet('schedules');
       const { noticeDDay } = await localStorageGet('noticeDDay');
@@ -81,7 +83,10 @@ const updateStorageByAlarm = async () => {
 
 const createNotification = () => {
   const newNotice = [];
+  // 학과 변경시, 새로 크롤링한 데이터를 새로 등록된 공지로 인식 -> 알림 발생
+  // mymajor, 학과에 따른 공지데이터가 2차례 나눠서 들어옴
   chrome.storage.onChanged.addListener(async (changes) => {
+    console.log(changes);
     if (changes.fixedNotices) {
       if (changes.fixedNotices.oldValue) {
         for (let i = 0; i < changes.fixedNotices.newValue.length; i += 1) {
@@ -101,6 +106,13 @@ const createNotification = () => {
           newNotice.push(changes.nonfixedNotices.newValue[i]);
         }
       }
+    }
+
+    if (
+      newNotice.length ===
+      (changes.fixedNotices?.newValue.length || 0) + (changes.nonfixedNotices?.newValue.length || 0)
+    ) {
+      newNotice.length = 0;
     }
 
     const { modalOnOff } = await chrome.storage.local.get('modalOnOff');

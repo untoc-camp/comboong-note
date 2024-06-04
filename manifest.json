@@ -8,7 +8,12 @@
     "type": "module"
   },
   "permissions": ["scripting", "storage", "alarms", "notifications"],
-  "host_permissions": ["https://onestop.pusan.ac.kr/", "https://cse.pusan.ac.kr/cse/14651/subview.do"],
+  "host_permissions": [
+    "https://onestop.pusan.ac.kr/",
+    "https://cse.pusan.ac.kr/cse/14651/subview.do",
+    "https://fsn.pusan.ac.kr/fsn/15462/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGZnNuJTJGMjc4MyUyRmFydGNsTGlzdC5kbyUzRmJic09wZW5XcmRTZXElM0QlMjZpc1ZpZXdNaW5lJTNEZmFsc2UlMjZzcmNoQ29sdW1uJTNEJTI2cGFnZSUzRDElMjZzcmNoV3JkJTNEJTI2cmdzQmduZGVTdHIlM0QlMjZiYnNDbFNlcSUzRCUyNnJnc0VuZGRlU3RyJTNEJTI2",
+    "https://civil.pusan.ac.kr/civil/16275/subview.do"
+  ],
   "action": {
     "default_popup": "/assets/popup/popup.html"
   },
