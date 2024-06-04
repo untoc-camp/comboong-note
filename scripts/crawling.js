@@ -1,3 +1,5 @@
+import { localStorageGet } from './storage.js';
+
 async function getSchedules() {
   const { tabs } = await chrome.windows.create({
     url: 'https://onestop.pusan.ac.kr',
@@ -22,8 +24,22 @@ async function getSchedules() {
 }
 
 async function getMajorNotices() {
+  const MAJOR_NOTICE_URL = {
+    정보컴퓨터공학부: 'https://cse.pusan.ac.kr/cse/14651/subview.do',
+    식품영양학과:
+      'https://fsn.pusan.ac.kr/fsn/15462/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGZnNuJTJGMjc4MyUyRmFydGNsTGlzdC5kbyUzRmJic09wZW5XcmRTZXElM0QlMjZpc1ZpZXdNaW5lJTNEZmFsc2UlMjZzcmNoQ29sdW1uJTNEJTI2cGFnZSUzRDElMjZzcmNoV3JkJTNEJTI2cmdzQmduZGVTdHIlM0QlMjZiYnNDbFNlcSUzRCUyNnJnc0VuZGRlU3RyJTNEJTI2',
+    토목공학과: 'https://civil.pusan.ac.kr/civil/16275/subview.do',
+  };
+  let majorNoticeUrl = MAJOR_NOTICE_URL['정보컴퓨터공학부'];
+  const { mymajor } = await localStorageGet('mymajor');
+  console.log(mymajor);
+
+  if (mymajor) {
+    majorNoticeUrl = MAJOR_NOTICE_URL[mymajor];
+    console.log(majorNoticeUrl);
+  }
   const { tabs } = await chrome.windows.create({
-    url: 'https://cse.pusan.ac.kr/cse/14651/subview.do',
+    url: majorNoticeUrl,
     state: 'minimized',
   });
 

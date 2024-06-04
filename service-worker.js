@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { getMajorNotices, getSchedules } from './scripts/crawling.js';
 import { createDDayNotification, createNotification, createNotificationSignal } from './scripts/notification.js';
-import { localStorageSet } from './scripts/storage.js';
+import { localStorageGet, localStorageSet } from './scripts/storage.js';
 
 // function openModal() {
 //   chrome.windows.create({
@@ -42,7 +42,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
       todayDate: new Date().getDate(),
       modalOnOff: true,
       noticeDDay: 3,
-      crawlingPeriod: 1,
+      crawlingPeriod: 3,
       mymajor: '정보컴퓨터공학부',
       initialStart: true,
     });
