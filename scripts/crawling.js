@@ -1,8 +1,15 @@
+import { localStorageSet, localStorageGet } from './storage.js';
+
 async function getSchedules() {
   const { tabs } = await chrome.windows.create({
     url: 'https://onestop.pusan.ac.kr',
     state: 'minimized',
   });
+
+  setTimeout(function () {
+    chrome.windows.remove(tabs[0].windowId);
+    return null;
+  }, 15000);
 
   const result = await chrome.scripting.executeScript({
     target: { tabId: tabs[0].id },
@@ -26,6 +33,11 @@ async function getMajorNotices() {
     url: 'https://cse.pusan.ac.kr/cse/14651/subview.do',
     state: 'minimized',
   });
+
+  setTimeout(function () {
+    chrome.windows.remove(tabs[0].windowId);
+    return null;
+  }, 15000);
 
   const result = await chrome.scripting.executeScript({
     target: { tabId: tabs[0].id },
