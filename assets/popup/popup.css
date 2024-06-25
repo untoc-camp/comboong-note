@@ -336,6 +336,12 @@ label {
   cursor: pointer;
 }
 
+#majorNoticeRefresh {
+  width: 10px;
+  cursor: pointer;
+}
+
+
 .hide {
   display: none;
 }
@@ -346,6 +352,19 @@ label {
   margin: 0px;
   padding: 0px;
   padding-bottom: 2px;
+}
+
+#refreshImg {
+  width: 16px;
+  vertical-align: middle;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: 2px;
+}
+
+#majorNoticeRefresh:hover #refreshImg{
+  /* 마우스 호버 시 이미지 색상 파란 색으로 변경 */
+  filter: invert(8%) sepia(100%) saturate(7484%) hue-rotate(248deg) brightness(97%) contrast(143%); 
 }
 
 .generalNotice {
