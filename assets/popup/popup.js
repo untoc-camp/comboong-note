@@ -1,6 +1,8 @@
 /* eslint-disable import/no-unresolved  */
 /* eslint-disable no-param-reassign */
 import { localStorageSet, localStorageGet } from '../../scripts/storage.js';
+import { getMajorNotices, getSchedules } from '../../scripts/crawling.js';
+import preprocessAndUpload from '../../scripts/preprocess.js';
 import settingData from '../../scripts/setting.js';
 
 function resetRender() {
@@ -71,6 +73,7 @@ function renderPopup(schedules, fixedNotices, nonfixedNotices) {
     link.textContent = articleTitle.replace(/ 새글/g, '');
     td.appendChild(link);
     td.appendChild(document.createTextNode(` (${articleWriter})`));
+    td.setAttribute('colspan', '2');
     noticeList.append(tr);
     tr.append(td);
     tr.classList.add('Notice');
@@ -122,6 +125,17 @@ function majorNoticesToggle() {
     } else {
       text.innerText = '일반공지 열기';
     }
+  });
+}
+
+function majorNoticesRefresh() {
+  const toggle = document.querySelector('#majorNoticeRefresh');
+
+  toggle.addEventListener('click', async () => {
+    const newNotices = await getMajorNotices();
+    const { schedules = [] } = await localStorageGet(['schedules']);
+    preprocessAndUpload(schedules, newNotices);
+    fetchAndRender();
   });
 }
 
@@ -253,12 +267,13 @@ tabEventListener();
 updateToggleValues();
 dropDownList();
 majorNoticesToggle();
+majorNoticesRefresh();
 addLinkAndMajor();
 
 (async () => {
-  const { initialStart } = await chrome.storage.local.get('initialStart');
+  const { initialStart } = await localStorageGet('initialStart');
   if (initialStart === true) {
-    const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+    const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await localStorageGet([
       'modalOnOff',
       'noticeDDay',
       'crawlingPeriod',
@@ -279,7 +294,7 @@ addLinkAndMajor();
       fetchAndRender();
     }
     if (!changes.initialStart) {
-      const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await chrome.storage.local.get([
+      const { modalOnOff, noticeDDay, crawlingPeriod, mymajor } = await localStorageGet([
         'modalOnOff',
         'noticeDDay',
         'crawlingPeriod',
