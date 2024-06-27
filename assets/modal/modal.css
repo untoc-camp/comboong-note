@@ -3,40 +3,84 @@
     font-weight: 400;
     src: url('/assets/fonts/SCDream4.otf');
   }
+html{
+    width: 600px;
+}
 body {
     font-family: SCDream;
-    width: 400px;
+    width: 500px;
+    height: 440px;
     background-color: white;
+    margin: 0;
 }
 .Comboongtext {
-    text-align: top;
+    text-align: middle;
     vertical-align: top;
+    padding: 10px 0 0 0px;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
-img {
+.iconcomboong {
     width: 57px;
+    height: 60px;
+    display: flex;
+    padding: 0 40px;
 }
 .commentbox {
-    height: 200px;
+    padding: 0;
+    height: 230px;
     background-color: #F5F5F5;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.comment1, .comment2, .comment3{
     display: flex;
+    align-items: center;
+    flex: 10em;
+    flex: 30%;
+    padding-top: 20px;
 }
-li {
-    vertical-align: middle;
-    list-style-type: none;
-}
-li img{
+.li-img{
     width: 40px;
+    padding: 8px 15px 0px 15px;
 }
 .li-comment{
-    flex-direction: column;
-    white-space: pre;
+    list-style-type: none;
+    white-space: nowrap;
+    flex: 10em;
+    flex: 30%;
 }
-/* .error-text{
-    vertical-align: middle;
-    text-align: center;
-    display: inline-block;
-} */
-.error-imform {
+ul{
+    padding-left: 0;
+}
+.extra{
+    background-color: yellow;
+    border-radius: 30px 30px 30px 0;
+    width: 310px;
+    height: 140px;
+    white-space: pre;
+    margin: 15px;
+
+}
+.extra_default{
+    color: black;
+    font-weight: bold;
+}
+.extra_settings{
+    color: grey;
+    font-weight: bold;
+}
+.settingset{
+    width: 22px;
+    height: 20px;
+}
+
+.error-imform{
+display: flex;
+justify-content: center;
+}
+.error-text {
     width: 385px;
     height: 40px;
     background-color: #105395;

@@ -7,19 +7,29 @@
     <link rel="stylesheet" href="modal.css" />
   </head>
   <body>
-    <h2 class="Comboongtext"><img src="../img/iconImg-1.png">&nbsp;&nbsp;&nbsp;Comboong Note</h2>
+    <h1 class="Comboongtext"><img  src="../img/iconImg-1.png"class="iconcomboong"/> Comboong Note</h1>
     <div class="commentbox">
       <ul>
-        <li class="li-comment"><img src="../img/setting_img.png"/>  초기 설정값을 확인해 주세요</li>
-        <li class="li-comment"><img src="../img/bell_img.png"/>  처음 설치 시 알람이 뜰 수 있음을 유의해 주세요</li> <!--css에서 옆으로 밀면 될것같은데..-->
-        <li class="li-comment"><img src="../img/warning_img.png"/> 본 프로그램으로 생기는 불이익은 책임지기 힘듭니다</li>
+        <div class="comment1"><img src="../img/setting_img.png" class="li-img"/><li class="li-comment"><b>초기 설정값</b>을 확인해 주세요<img src="../img/Initial_settings_img.png" class="settingset"/></li></div>
+        <div class="comment2"><img src="../img/bell_img.png" class="li-img"/><li class="li-comment"> 처음 설치 시 <b>알람</b>이 뜰 수 있음을 <b>유의해 주세요</b></li></div> <!--css에서 옆으로 밀면 될것같은데..-->
+        <div class="comment3"><img src="../img/warning_img.png" class="li-img"/><li class="li-comment"> 본 프로그램으로 생기는 <b>불이익</b>은 <b>책임지기 힘s듭니다</b></li></div>
       </ul>
     </div>
     <div class="error-imform">
       <div class="error-text">
-        오류 제보: 2004imjimin@pusan.ac.kr
+        오류 제보: leadcomboongnote@gmail.com
       </div>
     </div>
-    <script src="./modal.js"></script>
+
+    <div class="extra">
+      <span class="extra_default">default setting</span>
+      <span class="extra_settings">
+        Alarm : ON
+        Crawling : 3시간
+        Notification : 1일
+        Major : 정보컴퓨터공학부
+      </span>
+    </div>
+    <script type="module" src="./modal.js"></script>
   </body>
 </html>
