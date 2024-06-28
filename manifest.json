@@ -7,15 +7,9 @@
     "service_worker": "service-worker.js",
     "type": "module"
   },
-  "permissions": ["scripting", "storage", "alarms", "notifications"],
+  "permissions": ["tabs", "scripting", "storage", "alarms", "notifications"],
   "host_permissions": ["https://onestop.pusan.ac.kr/", "https://cse.pusan.ac.kr/cse/14651/subview.do"],
   "action": {
     "default_popup": "/assets/popup/popup.html"
-  },
-  "icons": {
-    "16": "assets/img/iconImg-16.png",
-    "32": "assets/img/iconImg-32.png",
-    "48": "assets/img/iconImg-48.png",
-    "128": "assets/img/iconImg-128.png"
   }
 }

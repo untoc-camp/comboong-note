@@ -3,15 +3,15 @@ import { getMajorNotices, getSchedules } from './scripts/crawling.js';
 import { createDDayNotification, createNotification, createNotificationSignal } from './scripts/notification.js';
 import { localStorageSet } from './scripts/storage.js';
 
-// function openModal() {
-//   chrome.windows.create({
-//     url: 'assets/modal/modal.html',
-//     type: 'popup',
-//     width: 400,
-//     height: 400,
-//     focused: true,
-//   });
-// }
+function openModal() {
+  chrome.windows.create({
+    url: 'assets/modal/modal.html',
+    type: 'popup',
+    width: 500,
+    height: 450,
+    focused: true,
+  });
+}
 
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (reason === 'install' || reason === 'update') {
@@ -52,3 +52,4 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 createNotificationSignal();
 createNotification();
 createDDayNotification();
+openModal();
