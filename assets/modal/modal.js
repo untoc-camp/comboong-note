@@ -3,5 +3,15 @@
 //   console.log(modalDisplayData);
 //   console.log(modalDisplayData.content, modalDisplayData.remainingDays);
 // })();
-
-window.open('/modal.html',"_blank","width = 500, height=600"); //링크 연결 안됨 
+document.addEventListener('DOMContentLoaded', function () {
+    const settingsImg = document.getElementById('settingset');
+    const extraDiv = document.getElementById('extra');
+  
+    settingsImg.addEventListener('mouseenter', function () {
+        extraDiv.style.display = 'block';
+    });
+  
+    settingsImg.addEventListener('mouseleave', function () {
+        extraDiv.style.display = 'none';
+    });
+  });
